@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import datetime
-import json
 import time
 
 # ==========================================
@@ -15,7 +14,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for Aura Aesthetic (Dark Mode / Warm Accents)
+# Custom CSS for Aura Aesthetic
 st.markdown("""
     <style>
     .stApp {
@@ -49,6 +48,13 @@ st.markdown("""
         padding: 1rem;
         margin-bottom: 0.75rem;
     }
+    .journal-card {
+        background-color: #1E293B;
+        border-left: 4px solid #A855F7;
+        border-radius: 6px;
+        padding: 0.75rem 1rem;
+        margin-bottom: 0.5rem;
+    }
     .legal-box {
         background-color: #18181B;
         border: 1px solid #27272A;
@@ -71,22 +77,23 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ==========================================
-# 2. SESSION STATE MANAGEMENT
+# 2. SESSION STATE MANAGEMENT (PERSISTENCE)
 # ==========================================
 if "authenticated" not in st.session_state:
     st.session_state.authenticated = False
 if "user_name" not in st.session_state:
     st.session_state.user_name = "Alex"
+
+# Seed data if empty
 if "checkin_history" not in st.session_state:
-    # Seed history for demo analytics
     st.session_state.checkin_history = [
-        {"Date": "2026-08-10", "Day": "Mon", "Pelvic Tension": 7, "Stress": 8, "Minutes Down-Trained": 5},
-        {"Date": "2026-08-11", "Day": "Tue", "Pelvic Tension": 8, "Stress": 7, "Minutes Down-Trained": 10},
-        {"Date": "2026-08-12", "Day": "Wed", "Pelvic Tension": 6, "Stress": 7, "Minutes Down-Trained": 5},
-        {"Date": "2026-08-13", "Day": "Thu", "Pelvic Tension": 4, "Stress": 5, "Minutes Down-Trained": 8},
-        {"Date": "2026-08-14", "Day": "Fri", "Pelvic Tension": 3, "Stress": 4, "Minutes Down-Trained": 0},
-        {"Date": "2026-08-15", "Day": "Sat", "Pelvic Tension": 2, "Stress": 2, "Minutes Down-Trained": 10},
-        {"Date": "2026-08-16", "Day": "Sun", "Pelvic Tension": 3, "Stress": 3, "Minutes Down-Trained": 5},
+        {"Date": "2026-08-10", "Day": "Mon", "Pelvic Tension": 7, "Stress": 8, "Minutes Down-Trained": 5, "Inhibitor": "Fatigue", "Note": "Tense evening after work."},
+        {"Date": "2026-08-11", "Day": "Tue", "Pelvic Tension": 8, "Stress": 7, "Minutes Down-Trained": 10, "Inhibitor": "Pain Anticipation", "Note": "Felt muscle tightness in pelvis."},
+        {"Date": "2026-08-12", "Day": "Wed", "Pelvic Tension": 6, "Stress": 7, "Minutes Down-Trained": 5, "Inhibitor": "Overstimulated", "Note": "Breathwork helped lower tension."},
+        {"Date": "2026-08-13", "Day": "Thu", "Pelvic Tension": 4, "Stress": 5, "Minutes Down-Trained": 8, "Inhibitor": "None", "Note": "Feeling much softer today."},
+        {"Date": "2026-08-14", "Day": "Fri", "Pelvic Tension": 3, "Stress": 4, "Minutes Down-Trained": 0, "Inhibitor": "None", "Note": "Rested well."},
+        {"Date": "2026-08-15", "Day": "Sat", "Pelvic Tension": 2, "Stress": 2, "Minutes Down-Trained": 10, "Inhibitor": "None", "Note": "Great weekend progress."},
+        {"Date": "2026-08-16", "Day": "Sun", "Pelvic Tension": 3, "Stress": 3, "Minutes Down-Trained": 5, "Inhibitor": "None", "Note": "Ready for the week."},
     ]
 
 # 30-Card Double Blind Deck Database
@@ -158,7 +165,6 @@ if not st.session_state.authenticated:
         """, unsafe_allow_html=True)
         
         consent = st.checkbox("I explicitly consent to Aura processing my health and pelvic data.")
-        partner_consent = st.checkbox("I consent to encrypted synchronization with my paired partner.")
 
         if st.button("Enter Secure Portal"):
             if consent:
@@ -186,20 +192,23 @@ elif nav_choice == "Dashboard & Check-In":
     st.title(f"Welcome Back, {st.session_state.user_name}")
     st.caption(f"Today is {datetime.date.today().strftime('%A, %B %d, %Y')}")
 
+    # Top Status Cards (Calculate from latest entry)
+    latest_entry = st.session_state.checkin_history[-1]
+    
     col1, col2, col3 = st.columns(3)
     with col1:
-        st.markdown("""
+        st.markdown(f"""
             <div class="metric-card">
             <h3>🧘‍♀️ Body Status</h3>
-            <p><b>Pelvic Tone:</b> Elevated Guarding</p>
+            <p><b>Pelvic Tone:</b> {latest_entry['Pelvic Tension']}/10</p>
             <p><b>Target:</b> 5-Min Down-Training</p>
             </div>
         """, unsafe_allow_html=True)
     with col2:
-        st.markdown("""
+        st.markdown(f"""
             <div class="metric-card">
             <h3>🎧 Mind Status</h3>
-            <p><b>Stress Level:</b> Moderate (5/10)</p>
+            <p><b>Stress Level:</b> {latest_entry['Stress']}/10</p>
             <p><b>Target:</b> Somatic Unwinding</p>
             </div>
         """, unsafe_allow_html=True)
@@ -219,21 +228,38 @@ elif nav_choice == "Dashboard & Check-In":
         p_tension = st.slider("Step 1: Pelvic & Somatic Tension (1 = Soft & Relaxed, 10 = High Guarding)", 1, 10, 6)
         m_stress = st.slider("Step 2: Mental Stress & Noise (1 = Calm & Present, 10 = Overwhelmed)", 1, 10, 5)
         brake = st.selectbox("Step 3: Identify Active Inhibitor (The Brake)", ["None", "Fatigue", "Physical Discomfort", "Pain Anticipation", "Overstimulated", "Emotional Distance"])
-        note = st.text_area("Private Journal Entry (Encrypted Client-Side)")
+        note = st.text_area("Private Journal Entry (Encrypted Client-Side)", placeholder="Notes on pelvic comfort, stress, or emotional state...")
 
-        if st.form_submit_button("Save Encrypted Log"):
+        submitted = st.form_submit_button("Save Encrypted Log")
+        
+        if submitted:
             new_entry = {
                 "Date": str(datetime.date.today()),
                 "Day": datetime.date.today().strftime("%a"),
                 "Pelvic Tension": p_tension,
                 "Stress": m_stress,
-                "Minutes Down-Trained": 0
+                "Minutes Down-Trained": 0,
+                "Inhibitor": brake,
+                "Note": note if note else "No private note added."
             }
+            # Append to session state list so it persists!
             st.session_state.checkin_history.append(new_entry)
-            st.success("Check-in saved securely! Adaptive protocol updated.")
-            
+            st.success("Check-in saved securely to your session vault!")
             if p_tension >= 6:
-                st.info("💡 High pelvic tension detected. Recommended: Head to 'Body' for a 5-minute down-training session.")
+                st.info("💡 High pelvic tension detected. Head to 'Body' for a 5-minute down-training session.")
+
+    # PERSISTENT JOURNAL HISTORY DISPLAY
+    st.markdown("---")
+    st.subheader("📋 Your Saved Logs & Journal History")
+    
+    # Show entries in reverse chronological order
+    for entry in reversed(st.session_state.checkin_history):
+        st.markdown(f"""
+            <div class="journal-card">
+            <b>{entry['Date']} ({entry['Day']})</b> — Pelvic Tension: <b>{entry['Pelvic Tension']}/10</b> | Stress: <b>{entry['Stress']}/10</b> | Active Brake: <i>{entry.get('Inhibitor', 'None')}</i><br>
+            <span style="color: #CBD5E1;">Note: "{entry.get('Note', 'No note recorded')}"</span>
+            </div>
+        """, unsafe_allow_html=True)
 
 # ==========================================
 # 6. SCREEN 2: BODY (PELVIC DOWN-TRAINING)
@@ -246,8 +272,6 @@ elif nav_choice == "Body (Pelvic Down-Training)":
 
     with tab1:
         st.subheader("Deep Somatic Unwinding & Pelvic Drop")
-        st.markdown("*Word-for-word audio narration transcript & session player.*")
-
         st.audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3")
 
         with st.expander("📄 View Word-for-Word Narration Script"):
@@ -353,7 +377,7 @@ elif nav_choice == "Partner Sync Deck":
         if submitted:
             st.success("Selections saved to isolated Zero-Leak Vault!")
             
-            # Simulated Dual Match Check (Simulating Partner B picked item #1)
+            # Simulated Dual Match Check
             if prompts[0] in selected_prompts:
                 st.balloons()
                 st.markdown(f"""
@@ -381,7 +405,7 @@ elif nav_choice == "Weekly Analytics":
     with col2:
         st.metric("Avg Mental Stress", f"{df['Stress'].mean():.1f} / 10", "-38% vs Last Week")
     with col3:
-        st.metric("Total Down-Training", f"{df['Minutes Down-Trained'].sum()} Mins", "4 Sessions Completed")
+        st.metric("Total Down-Training", f"{df['Minutes Down-Trained'].sum()} Mins", f"{len(df)} Logs Recorded")
 
     st.markdown("---")
     st.subheader("Pelvic Tension vs. Stress Trends")
@@ -406,9 +430,8 @@ elif nav_choice == "Weekly Analytics":
     st.markdown("""
         <div class="metric-card">
         <b>💡 Clinical Pattern Analysis:</b><br>
-        Notice how your pelvic tension dropped from an 8 on Tuesday down to a 3 by Friday? 
-        Data shows a strong direct correlation between your mental stress levels and your pelvic floor guarding. 
-        On days you completed down-training, tightness decreased by an average of 2.5 points.
+        Notice how your pelvic tension drops on days with lower mental stress? 
+        Data shows a direct correlation between high stress and involuntary pelvic floor guarding.
         </div>
     """, unsafe_allow_html=True)
 
@@ -441,11 +464,10 @@ elif nav_choice == "Privacy & DPA":
             **Applicability:** Cloud Infrastructure Vendors (AWS/GCP/Azure)
             
             #### 1. Technical & Organizational Measures (TOMs)
-            * **Encryption at Rest:** AES-256 enforced across disk, DB instances, and backups with rotation via KMS.
+            * **Encryption at Rest:** AES-256 enforced across disk, DB instances, and backups.
             * **Encryption in Transit:** Mandatory TLS 1.3 for all VPC crossing traffic.
-            * **Field-Level Isolation:** Client-side AES-256 envelope encryption. Subprocessor stores unreadable binary blobs without decryption keys.
+            * **Field-Level Isolation:** Client-side AES-256 envelope encryption.
             
             #### 2. Incident Management & SLAs
-            * **24-Hour Notification:** Subprocessor must notify Aura within 24 hours of detecting a suspected or confirmed security breach involving health data.
-            * **72-Hour Detailed Audit:** Formal report detailing affected scopes and immediate remediations.
+            * **24-Hour Notification:** Subprocessor must notify Aura within 24 hours of detecting a suspected security breach.
         """)
