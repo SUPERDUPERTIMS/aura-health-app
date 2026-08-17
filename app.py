@@ -84,17 +84,9 @@ if "authenticated" not in st.session_state:
 if "user_name" not in st.session_state:
     st.session_state.user_name = "Alex"
 
-# Seed data if empty
+# Clean state (Starts empty for real user data)
 if "checkin_history" not in st.session_state:
-    st.session_state.checkin_history = [
-        {"Date": "2026-08-10", "Day": "Mon", "Pelvic Tension": 7, "Stress": 8, "Minutes Down-Trained": 5, "Inhibitor": "Fatigue", "Note": "Tense evening after work."},
-        {"Date": "2026-08-11", "Day": "Tue", "Pelvic Tension": 8, "Stress": 7, "Minutes Down-Trained": 10, "Inhibitor": "Pain Anticipation", "Note": "Felt muscle tightness in pelvis."},
-        {"Date": "2026-08-12", "Day": "Wed", "Pelvic Tension": 6, "Stress": 7, "Minutes Down-Trained": 5, "Inhibitor": "Overstimulated", "Note": "Breathwork helped lower tension."},
-        {"Date": "2026-08-13", "Day": "Thu", "Pelvic Tension": 4, "Stress": 5, "Minutes Down-Trained": 8, "Inhibitor": "None", "Note": "Feeling much softer today."},
-        {"Date": "2026-08-14", "Day": "Fri", "Pelvic Tension": 3, "Stress": 4, "Minutes Down-Trained": 0, "Inhibitor": "None", "Note": "Rested well."},
-        {"Date": "2026-08-15", "Day": "Sat", "Pelvic Tension": 2, "Stress": 2, "Minutes Down-Trained": 10, "Inhibitor": "None", "Note": "Great weekend progress."},
-        {"Date": "2026-08-16", "Day": "Sun", "Pelvic Tension": 3, "Stress": 3, "Minutes Down-Trained": 5, "Inhibitor": "None", "Note": "Ready for the week."},
-    ]
+    st.session_state.checkin_history = []
 
 # 30-Card Double Blind Deck Database
 CARD_DECK = {
@@ -192,15 +184,21 @@ elif nav_choice == "Dashboard & Check-In":
     st.title(f"Welcome Back, {st.session_state.user_name}")
     st.caption(f"Today is {datetime.date.today().strftime('%A, %B %d, %Y')}")
 
-    # Top Status Cards (Calculate from latest entry)
-    latest_entry = st.session_state.checkin_history[-1]
-    
+    # Top Status Cards
+    if len(st.session_state.checkin_history) > 0:
+        latest = st.session_state.checkin_history[-1]
+        p_val = f"{latest['Pelvic Tension']}/10"
+        s_val = f"{latest['Stress']}/10"
+    else:
+        p_val = "No log today"
+        s_val = "No log today"
+
     col1, col2, col3 = st.columns(3)
     with col1:
         st.markdown(f"""
             <div class="metric-card">
             <h3>🧘‍♀️ Body Status</h3>
-            <p><b>Pelvic Tone:</b> {latest_entry['Pelvic Tension']}/10</p>
+            <p><b>Pelvic Tone:</b> {p_val}</p>
             <p><b>Target:</b> 5-Min Down-Training</p>
             </div>
         """, unsafe_allow_html=True)
@@ -208,7 +206,7 @@ elif nav_choice == "Dashboard & Check-In":
         st.markdown(f"""
             <div class="metric-card">
             <h3>🎧 Mind Status</h3>
-            <p><b>Stress Level:</b> {latest_entry['Stress']}/10</p>
+            <p><b>Stress Level:</b> {s_val}</p>
             <p><b>Target:</b> Somatic Unwinding</p>
             </div>
         """, unsafe_allow_html=True)
@@ -225,13 +223,13 @@ elif nav_choice == "Dashboard & Check-In":
     st.subheader("60-Second Daily Check-In")
 
     with st.form("checkin_form"):
-        p_tension = st.slider("Step 1: Pelvic & Somatic Tension (1 = Soft & Relaxed, 10 = High Guarding)", 1, 10, 6)
+        p_tension = st.slider("Step 1: Pelvic & Somatic Tension (1 = Soft & Relaxed, 10 = High Guarding)", 1, 10, 5)
         m_stress = st.slider("Step 2: Mental Stress & Noise (1 = Calm & Present, 10 = Overwhelmed)", 1, 10, 5)
         brake = st.selectbox("Step 3: Identify Active Inhibitor (The Brake)", ["None", "Fatigue", "Physical Discomfort", "Pain Anticipation", "Overstimulated", "Emotional Distance"])
         note = st.text_area("Private Journal Entry (Encrypted Client-Side)", placeholder="Notes on pelvic comfort, stress, or emotional state...")
 
         submitted = st.form_submit_button("Save Encrypted Log")
-        
+
         if submitted:
             new_entry = {
                 "Date": str(datetime.date.today()),
@@ -242,24 +240,50 @@ elif nav_choice == "Dashboard & Check-In":
                 "Inhibitor": brake,
                 "Note": note if note else "No private note added."
             }
-            # Append to session state list so it persists!
             st.session_state.checkin_history.append(new_entry)
-            st.success("Check-in saved securely to your session vault!")
-            if p_tension >= 6:
-                st.info("💡 High pelvic tension detected. Head to 'Body' for a 5-minute down-training session.")
+            st.success("✅ Check-in saved securely!")
 
-    # PERSISTENT JOURNAL HISTORY DISPLAY
+            # TAILORED NEXT STEPS BASED ON RATINGS
+            st.markdown("---")
+            st.markdown("### 🎯 Recommended Next Steps")
+            st.caption("Tap the `>>` sidebar icon at the top-left of your screen to open these modules:")
+            
+            c1, c2, c3 = st.columns(3)
+            
+            with c1:
+                if p_tension >= 6:
+                    st.warning("⚠️ High Pelvic Tension")
+                    st.write("Open **Body** in the menu to start a 5-minute diaphragmatic down-training session.")
+                else:
+                    st.success("🟢 Pelvic Tone Calm")
+                    st.write("Your muscle tone is low. Good foundation for rest or intimacy.")
+
+            with c2:
+                if m_stress >= 6:
+                    st.warning("⚠️ High Stress Active")
+                    st.write("Open **Mind** in the menu to listen to a 6-minute stress decompression track.")
+                else:
+                    st.success("🟢 Stress Managed")
+                    st.write("Mental noise is low today.")
+
+            with c3:
+                st.info("💡 Partner Connection")
+                st.write("Open **Partner Sync Deck** in the menu to secretly select low-pressure activities for tonight.")
+
+    # HISTORICAL LOG DISPLAY
     st.markdown("---")
-    st.subheader("📋 Your Saved Logs & Journal History")
+    st.subheader("📋 Saved Logs & Journal History")
     
-    # Show entries in reverse chronological order
-    for entry in reversed(st.session_state.checkin_history):
-        st.markdown(f"""
-            <div class="journal-card">
-            <b>{entry['Date']} ({entry['Day']})</b> — Pelvic Tension: <b>{entry['Pelvic Tension']}/10</b> | Stress: <b>{entry['Stress']}/10</b> | Active Brake: <i>{entry.get('Inhibitor', 'None')}</i><br>
-            <span style="color: #CBD5E1;">Note: "{entry.get('Note', 'No note recorded')}"</span>
-            </div>
-        """, unsafe_allow_html=True)
+    if len(st.session_state.checkin_history) == 0:
+        st.info("No check-in logs recorded yet. Fill out the form above to log your first session!")
+    else:
+        for entry in reversed(st.session_state.checkin_history):
+            st.markdown(f"""
+                <div class="journal-card">
+                <b>{entry['Date']} ({entry['Day']})</b> — Pelvic Tension: <b>{entry['Pelvic Tension']}/10</b> | Stress: <b>{entry['Stress']}/10</b> | Active Brake: <i>{entry.get('Inhibitor', 'None')}</i><br>
+                <span style="color: #CBD5E1;">Note: "{entry.get('Note', 'No note recorded')}"</span>
+                </div>
+            """, unsafe_allow_html=True)
 
 # ==========================================
 # 6. SCREEN 2: BODY (PELVIC DOWN-TRAINING)
@@ -291,16 +315,13 @@ elif nav_choice == "Body (Pelvic Down-Training)":
             progress_bar = st.progress(0)
             status_text = st.empty()
             
-            for i in range(1, 4):  # 3 Guided Cycles
-                # Inhale
+            for i in range(1, 4):
                 for p in range(0, 101, 10):
                     progress_bar.progress(p)
                     status_text.markdown(f"### 🫁 INHALE (Expanding Belly) - Cycle {i}/3")
                     time.sleep(0.4)
-                # Hold
                 status_text.markdown(f"### ⏸️ HOLD (Soft) - Cycle {i}/3")
                 time.sleep(2)
-                # Exhale
                 for p in range(100, -1, -10):
                     progress_bar.progress(p)
                     status_text.markdown(f"### 🌬️ EXHALE & DROP PELVIS - Cycle {i}/3")
@@ -350,7 +371,7 @@ elif nav_choice == "Mind (Audio Library)":
                 """, unsafe_allow_html=True)
 
 # ==========================================
-# 8. SCREEN 4: PARTNER SYNC DECK (30 CARDS)
+# 8. SCREEN 4: PARTNER SYNC DECK
 # ==========================================
 elif nav_choice == "Partner Sync Deck":
     st.title("Double-Blind Partner Deck")
@@ -376,9 +397,7 @@ elif nav_choice == "Partner Sync Deck":
         
         if submitted:
             st.success("Selections saved to isolated Zero-Leak Vault!")
-            
-            # Simulated Dual Match Check
-            if prompts[0] in selected_prompts:
+            if len(selected_prompts) > 0 and prompts[0] in selected_prompts:
                 st.balloons()
                 st.markdown(f"""
                     <div class="match-banner">
@@ -390,53 +409,46 @@ elif nav_choice == "Partner Sync Deck":
                 st.info("No mutual matches detected yet tonight. Unmatched choices remain strictly confidential.")
 
 # ==========================================
-# 9. SCREEN 5: WEEKLY ANALYTICS & TRENDS
+# 9. SCREEN 5: WEEKLY ANALYTICS
 # ==========================================
 elif nav_choice == "Weekly Analytics":
     st.title("Weekly Analytics & Clinical Progress")
     st.caption("Correlations between stress, pelvic tension, and down-training interventions.")
 
-    df = pd.DataFrame(st.session_state.checkin_history)
+    if len(st.session_state.checkin_history) == 0:
+        st.warning("No check-in logs recorded yet. Complete a few daily check-ins on the Dashboard to see your analytics charts!")
+    else:
+        df = pd.DataFrame(st.session_state.checkin_history)
 
-    # Metric summary cards
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st.metric("Avg Pelvic Tension", f"{df['Pelvic Tension'].mean():.1f} / 10", "-43% vs Last Week")
-    with col2:
-        st.metric("Avg Mental Stress", f"{df['Stress'].mean():.1f} / 10", "-38% vs Last Week")
-    with col3:
-        st.metric("Total Down-Training", f"{df['Minutes Down-Trained'].sum()} Mins", f"{len(df)} Logs Recorded")
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.metric("Avg Pelvic Tension", f"{df['Pelvic Tension'].mean():.1f} / 10")
+        with col2:
+            st.metric("Avg Mental Stress", f"{df['Stress'].mean():.1f} / 10")
+        with col3:
+            st.metric("Total Logs Recorded", f"{len(df)} Entries")
 
-    st.markdown("---")
-    st.subheader("Pelvic Tension vs. Stress Trends")
+        st.markdown("---")
+        st.subheader("Pelvic Tension vs. Stress Trends")
 
-    # Plotly Trend Chart
-    fig = px.line(
-        df, 
-        x="Day", 
-        y=["Pelvic Tension", "Stress"], 
-        markers=True,
-        color_discrete_map={"Pelvic Tension": "#A855F7", "Stress": "#3B82F6"}
-    )
-    fig.update_layout(
-        paper_bgcolor="#0F172A",
-        plot_bgcolor="#1E1B4B",
-        font_color="#F8FAFC",
-        yaxis=dict(range=[0, 10]),
-        legend_title_text="Metrics"
-    )
-    st.plotly_chart(fig, use_container_width=True)
-
-    st.markdown("""
-        <div class="metric-card">
-        <b>💡 Clinical Pattern Analysis:</b><br>
-        Notice how your pelvic tension drops on days with lower mental stress? 
-        Data shows a direct correlation between high stress and involuntary pelvic floor guarding.
-        </div>
-    """, unsafe_allow_html=True)
+        fig = px.line(
+            df, 
+            x="Day", 
+            y=["Pelvic Tension", "Stress"], 
+            markers=True,
+            color_discrete_map={"Pelvic Tension": "#A855F7", "Stress": "#3B82F6"}
+        )
+        fig.update_layout(
+            paper_bgcolor="#0F172A",
+            plot_bgcolor="#1E1B4B",
+            font_color="#F8FAFC",
+            yaxis=dict(range=[0, 10]),
+            legend_title_text="Metrics"
+        )
+        st.plotly_chart(fig, use_container_width=True)
 
 # ==========================================
-# 10. SCREEN 6: PRIVACY & LEGAL DPA SCHEDULE
+# 10. SCREEN 6: PRIVACY & DPA
 # ==========================================
 elif nav_choice == "Privacy & DPA":
     st.title("Privacy, Data Retention & Cloud DPA")
@@ -453,7 +465,8 @@ elif nav_choice == "Privacy & DPA":
         })
 
         if st.button("Trigger Immediate Account & Data Erasure"):
-            st.error("Account erasure requested. All database encryption keys revoked.")
+            st.session_state.checkin_history = []
+            st.error("Account erasure requested. All local encryption keys revoked.")
             st.session_state.authenticated = False
             st.rerun()
 
