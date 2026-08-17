@@ -3,6 +3,8 @@ import pandas as pd
 import plotly.express as px
 import datetime
 import time
+from gtts import gTTS
+import io
 
 # ==========================================
 # 1. PAGE CONFIGURATION & THEMING
@@ -150,6 +152,15 @@ CARD_DECK = {
     ]
 }
 
+# VOICE PROFILES MAPPING (gTTS accents)
+VOICE_PROFILES = {
+    "🇦🇺 Grounded & Deep / Accent (Australian Male/Female)": {"lang": "en", "tld": "com.au"},
+    "🇬🇧 Warm & Expressive (British Accent)": {"lang": "en", "tld": "co.uk"},
+    "🇺🇸 Calm & Clear (US Accent)": {"lang": "en", "tld": "com"},
+    "🇮🇳 Soft & Guided (Indian English Accent)": {"lang": "en", "tld": "co.in"},
+    "🇨🇦 Relaxed & Soft (Canadian Accent)": {"lang": "en", "tld": "ca"}
+}
+
 # ==========================================
 # 3. SIDEBAR NAVIGATION
 # ==========================================
@@ -164,7 +175,7 @@ if st.session_state.authenticated:
             "Dashboard & Check-In", 
             "AI Somatic Coach", 
             "Body (Pelvic & PT Tracker)", 
-            "Mind (Audio & Scripts)", 
+            "Mind (Audio & Multi-Voice)", 
             "Sensate Focus & Partner Deck", 
             "Weekly Analytics & PT Report", 
             "Privacy & Security"
@@ -222,7 +233,7 @@ if not st.session_state.authenticated:
             <h4>Pillars of Clinical Care</h4>
             <ul>
                 <li><b>Body:</b> Pelvic floor down-training & physical therapy logging.</li>
-                <li><b>Mind:</b> Audio grounding & Dual-Control Model desire science.</li>
+                <li><b>Mind:</b> Multi-voice audio grounding & Dual-Control Model science.</li>
                 <li><b>Partner:</b> Double-blind desire matching & Sensate Focus guides.</li>
                 <li><b>Analytics:</b> One-click PDF/CSV reports for physical therapists.</li>
             </ul>
@@ -295,7 +306,7 @@ elif nav_choice == "Dashboard & Check-In":
 
             st.markdown("---")
             st.markdown("### 🎯 Recommended Next Steps")
-            st.caption("Use the `>>` sidebar icon at the top-left to navigate to these tools:")
+            st.caption("Use the sidebar navigation to open these tools:")
             
             c1, c2, c3 = st.columns(3)
             with c1:
@@ -309,7 +320,7 @@ elif nav_choice == "Dashboard & Check-In":
             with c2:
                 if m_stress >= 6:
                     st.warning("⚠️ High Stress Active")
-                    st.write("Open **Mind** to listen to stress decompression tracks.")
+                    st.write("Open **Mind** to generate decompression tracks.")
                 else:
                     st.success("🟢 Stress Managed")
                     st.write("Mental noise is low today.")
@@ -333,7 +344,7 @@ elif nav_choice == "Dashboard & Check-In":
             """, unsafe_allow_html=True)
 
 # ==========================================
-# 6. SCREEN 2: AI SOMATIC COACH (NEW)
+# 6. SCREEN 2: AI SOMATIC COACH
 # ==========================================
 elif nav_choice == "AI Somatic Coach":
     st.title("🤖 Adaptive Somatic AI Coach")
@@ -361,7 +372,7 @@ elif nav_choice == "AI Somatic Coach":
             st.markdown("""
             * **Minute 0–2 (Diaphragmatic Reset):** Inhale 4s, hold 2s, exhale 6s with explicit pelvic floor release.
             * **Minute 2–4 (Somatic Body Scan):** Unclench jaw, drop shoulders, soften gluteal muscles.
-            * **Minute 4–7 (Audio Grounding):** Play *'Somatic Decompression After Work'* from the Mind library.
+            * **Minute 4–7 (Audio Grounding):** Generate *'Somatic Decompression After Work'* in the Mind tab.
             """)
         elif p_score >= 6:
             st.warning("Pelvic Muscle Guarding Detected. Initiating Down-Training Focus.")
@@ -452,29 +463,42 @@ elif nav_choice == "Body (Pelvic & PT Tracker)":
             st.dataframe(pd.DataFrame(st.session_state.dilator_logs), use_container_width=True)
 
 # ==========================================
-# 8. SCREEN 4: MIND (AUDIO & SCRIPTS)
+# 8. SCREEN 4: MIND (MULTI-VOICE AUDIO)
 # ==========================================
-elif nav_choice == "Mind (Audio & Scripts)":
-    st.title("Mind: Psychoeducation & Audio Library")
-    st.caption("Dual-Control Model science, somatic grounding, and complete scripts.")
+elif nav_choice == "Mind (Audio & Multi-Voice)":
+    st.title("Mind: Multi-Voice Audio Generator")
+    st.caption("Select a track script and choose a voice profile to generate live voice audio.")
 
-    selected_track = st.selectbox("Select Audio Module or Narration Script", list(AUDIO_SCRIPTS.keys()))
+    selected_track = st.selectbox("Select Audio Module:", list(AUDIO_SCRIPTS.keys()))
+    selected_voice_label = st.selectbox("Choose Narrator Voice Profile:", list(VOICE_PROFILES.keys()))
 
     col1, col2 = st.columns([1, 1])
 
     with col1:
-        st.markdown("### 🎧 Public Voice Stream")
-        st.caption("Listen to sample guided audio or practice reading the text narration on the right:")
-        st.audio("https://www.mindfulnessinaction.ca/wp-content/uploads/2022/12/Awareness-of-Breathing-10-minutes.mp3")
+        st.markdown("### 🔊 Live Voice Generator")
+        
+        if st.button("▶️ Generate & Play Live Audio"):
+            with st.spinner("Synthesizing narration in selected voice..."):
+                script_text = AUDIO_SCRIPTS[selected_track]
+                voice_config = VOICE_PROFILES[selected_voice_label]
+                
+                # Generate MP3 in-memory via gTTS
+                tts = gTTS(text=script_text, lang=voice_config["lang"], tld=voice_config["tld"], slow=False)
+                
+                fp = io.BytesIO()
+                tts.write_to_fp(fp)
+                fp.seek(0)
+                
+                st.audio(fp, format="audio/mp3")
+                st.success("Voice audio rendered successfully!")
 
     with col2:
-        st.markdown(f"### 📄 Script: {selected_track}")
+        st.markdown(f"### 📄 Script Preview")
         st.markdown(f"""
             <div class="script-box">
             "{AUDIO_SCRIPTS[selected_track]}"
             </div>
         """, unsafe_allow_html=True)
-        st.caption("💡 You can record yourself reading this script on your phone or paste it into a text-to-speech generator.")
 
 # ==========================================
 # 9. SCREEN 5: SENSATE FOCUS & PARTNER DECK
