@@ -101,6 +101,15 @@ if "dilator_logs" not in st.session_state:
 if "partner_beacon" not in st.session_state:
     st.session_state.partner_beacon = "🔋 Energy Low"
 
+# EROTIC CONTEXT QUESTIONS DATABASE
+EROTIC_CONTEXT_QUESTIONS = {
+    "Cognitive Load & Tasks": "I find it hard to feel desire if I have unfinished chores, work emails, or mental stress lingering.",
+    "Emotional Closeness": "I need to feel emotionally connected, appreciated, and close with my partner before I feel open to physical intimacy.",
+    "Somatic & Muscle Comfort": "Physical relaxation, bodily warmth, and an absence of pelvic muscle guarding are essential for me to feel open to touch.",
+    "Sensory Environment": "Factors like dim lighting, pleasant scents, clean sheets, and ambient music strongly influence my mood and desire.",
+    "Novelty & Playfulness": "Playful teasing, unexpected affection, changing locations, or roleplay easily activates my desire."
+}
+
 # AUDIO SCRIPTS DATABASE
 AUDIO_SCRIPTS = {
     "Understanding Responsive Desire": (
@@ -154,7 +163,7 @@ CARD_DECK = {
 
 # VOICE PROFILES MAPPING (gTTS accents)
 VOICE_PROFILES = {
-    "🇦🇺 Grounded & Deep / Accent (Australian Male/Female)": {"lang": "en", "tld": "com.au"},
+    "🇦🇺 Grounded & Deep / Accent (Australian)": {"lang": "en", "tld": "com.au"},
     "🇬🇧 Warm & Expressive (British Accent)": {"lang": "en", "tld": "co.uk"},
     "🇺🇸 Calm & Clear (US Accent)": {"lang": "en", "tld": "com"},
     "🇮🇳 Soft & Guided (Indian English Accent)": {"lang": "en", "tld": "co.in"},
@@ -173,6 +182,7 @@ if st.session_state.authenticated:
         "Navigation",
         [
             "Dashboard & Check-In", 
+            "Erotic Context Profile",
             "AI Somatic Coach", 
             "Body (Pelvic & PT Tracker)", 
             "Mind (Audio & Multi-Voice)", 
@@ -234,6 +244,7 @@ if not st.session_state.authenticated:
             <ul>
                 <li><b>Body:</b> Pelvic floor down-training & physical therapy logging.</li>
                 <li><b>Mind:</b> Multi-voice audio grounding & Dual-Control Model science.</li>
+                <li><b>Context:</b> Erotic context profile mapping (Brakes vs Accelerators).</li>
                 <li><b>Partner:</b> Double-blind desire matching & Sensate Focus guides.</li>
                 <li><b>Analytics:</b> One-click PDF/CSV reports for physical therapists.</li>
             </ul>
@@ -344,7 +355,56 @@ elif nav_choice == "Dashboard & Check-In":
             """, unsafe_allow_html=True)
 
 # ==========================================
-# 6. SCREEN 2: AI SOMATIC COACH
+# 6. SCREEN 2: EROTIC CONTEXT PROFILE (NEW)
+# ==========================================
+elif nav_choice == "Erotic Context Profile":
+    st.title("✨ Custom Erotic Context Profile")
+    st.caption("Map your unique desire accelerators and brakes based on the Dual-Control Model.")
+
+    scores = {}
+    with st.form("erotic_profile_form"):
+        st.subheader("Contextual Sensitivity Assessment")
+        st.write("Rate how significantly each dimension impacts your ability to feel open to intimacy:")
+        
+        for category, statement in EROTIC_CONTEXT_QUESTIONS.items():
+            st.markdown(f"#### {category}")
+            st.caption(f'"{statement}"')
+            scores[category] = st.slider(f"Impact Level (1 = Low Impact, 5 = Critical Requirement)", 1, 5, 3, key=category)
+            st.markdown("---")
+        
+        submitted = st.form_submit_button("Save Private Context Profile")
+        if submitted:
+            st.session_state["erotic_profile"] = scores
+            st.success("Erotic Context Profile saved securely to your private vault!")
+
+    if "erotic_profile" in st.session_state:
+        st.markdown("---")
+        st.subheader("📊 Your Desire Context Map")
+        
+        profile_df = pd.DataFrame(list(st.session_state["erotic_profile"].items()), columns=["Dimension", "Sensitivity Score"])
+        
+        fig = px.bar(
+            profile_df, 
+            x="Dimension", 
+            y="Sensitivity Score", 
+            color="Sensitivity Score", 
+            color_continuous_scale="Purples",
+            text="Sensitivity Score"
+        )
+        fig.update_layout(
+            paper_bgcolor="#0F172A", 
+            plot_bgcolor="#1E1B4B", 
+            font_color="#F8FAFC", 
+            yaxis=dict(range=[0, 5])
+        )
+        st.plotly_chart(fig, use_container_width=True)
+
+        # Highlight top brake/accelerator
+        top_dim = profile_df.sort_values(by="Sensitivity Score", ascending=False).iloc[0]["Dimension"]
+        st.info(f"💡 **Key Insight:** Your desire is most sensitive to **'{top_dim}'**. Focus on satisfying this condition before initiating intimacy.")
+
+# ==========================================
+# 7. SCREEN 3: AI SOMATIC COACH
 # ==========================================
 elif nav_choice == "AI Somatic Coach":
     st.title("🤖 Adaptive Somatic AI Coach")
@@ -397,7 +457,7 @@ elif nav_choice == "AI Somatic Coach":
             st.caption("Log at least 3 daily check-ins to unlock automated pattern analysis.")
 
 # ==========================================
-# 7. SCREEN 3: BODY (PELVIC & PT TRACKER)
+# 8. SCREEN 4: BODY (PELVIC & PT TRACKER)
 # ==========================================
 elif nav_choice == "Body (Pelvic & PT Tracker)":
     st.title("Body: Pelvic Floor & Physical Therapy Tracker")
@@ -463,7 +523,7 @@ elif nav_choice == "Body (Pelvic & PT Tracker)":
             st.dataframe(pd.DataFrame(st.session_state.dilator_logs), use_container_width=True)
 
 # ==========================================
-# 8. SCREEN 4: MIND (MULTI-VOICE AUDIO)
+# 9. SCREEN 5: MIND (MULTI-VOICE AUDIO)
 # ==========================================
 elif nav_choice == "Mind (Audio & Multi-Voice)":
     st.title("Mind: Multi-Voice Audio Generator")
@@ -501,7 +561,7 @@ elif nav_choice == "Mind (Audio & Multi-Voice)":
         """, unsafe_allow_html=True)
 
 # ==========================================
-# 9. SCREEN 5: SENSATE FOCUS & PARTNER DECK
+# 10. SCREEN 6: SENSATE FOCUS & PARTNER DECK
 # ==========================================
 elif nav_choice == "Sensate Focus & Partner Deck":
     st.title("Partner Sync & Sensate Focus")
@@ -557,7 +617,7 @@ elif nav_choice == "Sensate Focus & Partner Deck":
                     st.info("No mutual matches detected yet tonight. Unmatched choices remain strictly confidential.")
 
 # ==========================================
-# 10. SCREEN 6: WEEKLY ANALYTICS & PT REPORT
+# 11. SCREEN 7: WEEKLY ANALYTICS & PT REPORT
 # ==========================================
 elif nav_choice == "Weekly Analytics & PT Report":
     st.title("Weekly Analytics & Clinical Reporting")
@@ -608,7 +668,7 @@ elif nav_choice == "Weekly Analytics & PT Report":
         )
 
 # ==========================================
-# 11. SCREEN 7: PRIVACY & SECURITY
+# 12. SCREEN 8: PRIVACY & SECURITY
 # ==========================================
 elif nav_choice == "Privacy & Security":
     st.title("Privacy, Security & Data Erasure")
