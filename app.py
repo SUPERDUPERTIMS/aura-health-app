@@ -9,98 +9,131 @@ from fpdf import FPDF
 from gtts import gTTS
 
 # ==========================================
-# 1. PAGE CONFIGURATION & THEMING
+# 1. PAGE CONFIGURATION & PREMIUM THEMING
 # ==========================================
 st.set_page_config(
-    page_title="Aura | Intimacy & Pelvic Health",
-    page_icon="🧘‍♀️",
+    page_title="Aura | Somatic & Pelvic Health",
+    page_icon="🌿",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# Custom Styling for polished dark UI cards
+# Dark Mode Theme with Modern Glassmorphism
 st.markdown("""
     <style>
+    /* Main Background */
     .stApp {
-        background-color: #0F172A;
-        color: #F8FAFC;
+        background: linear-gradient(135deg, #090D16 0%, #0F172A 100%);
+        color: #F1F5F9;
+        font-family: 'Inter', sans-serif;
     }
-    .stButton>button {
-        background-color: #A855F7;
-        color: white;
-        border-radius: 8px;
-        border: none;
-        padding: 0.5rem 1rem;
-        font-weight: 600;
-        width: 100%;
+    
+    /* Custom Card Styling */
+    .glass-card {
+        background: rgba(30, 41, 59, 0.65);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin-bottom: 1.25rem;
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
     }
-    .stButton>button:hover {
-        background-color: #9333EA;
-        color: white;
+    
+    .accent-card {
+        background: linear-gradient(135deg, rgba(88, 28, 135, 0.35) 0%, rgba(30, 27, 75, 0.55) 100%);
+        border: 1px solid rgba(192, 132, 252, 0.3);
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin-bottom: 1.25rem;
     }
-    .metric-card {
-        background-color: #1E1B4B;
-        border: 1px solid #312E81;
-        border-radius: 12px;
-        padding: 1.25rem;
-        margin-bottom: 1rem;
-    }
+
     .prompt-card {
-        background-color: #18181B;
-        border: 1px solid #27272A;
-        border-radius: 10px;
+        background: rgba(24, 24, 27, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 12px;
         padding: 1rem;
         margin-bottom: 0.75rem;
     }
-    .journal-card {
-        background-color: #1E293B;
-        border-left: 4px solid #A855F7;
-        border-radius: 6px;
-        padding: 0.75rem 1rem;
-        margin-bottom: 0.5rem;
+
+    .script-box {
+        background: rgba(30, 41, 59, 0.8);
+        border: 1px solid #475569;
+        border-radius: 12px;
+        padding: 1.25rem;
+        font-style: italic;
+        color: #E2E8F0;
+        margin-top: 0.5rem;
+        line-height: 1.6;
     }
-    .legal-box {
-        background-color: #18181B;
-        border: 1px solid #27272A;
-        border-radius: 8px;
-        padding: 1rem;
-        font-size: 0.85rem;
-        color: #A1A1AA;
-        height: 150px;
-        overflow-y: scroll;
-    }
+
     .match-banner {
-        background-color: #064E3B;
+        background: rgba(6, 78, 59, 0.6);
         border: 1px solid #10B981;
         color: #ECFDF5;
-        padding: 1.2rem;
-        border-radius: 10px;
+        padding: 1.25rem;
+        border-radius: 12px;
         margin-top: 1rem;
         margin-bottom: 1rem;
     }
-    .icebreaker-box {
-        background-color: #1E293B;
-        border: 1px dashed #A855F7;
-        border-radius: 8px;
-        padding: 0.85rem;
-        margin-top: 0.5rem;
-        font-style: italic;
-        color: #E2E8F0;
+
+    /* Buttons */
+    .stButton>button {
+        background: linear-gradient(135deg, #A855F7 0%, #7C3AED 100%);
+        color: white;
+        border-radius: 10px;
+        border: none;
+        padding: 0.6rem 1.2rem;
+        font-weight: 600;
+        letter-spacing: 0.3px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 14px rgba(124, 58, 237, 0.3);
+        width: 100%;
     }
-    .script-box {
-        background-color: #1E293B;
-        border: 1px solid #475569;
-        border-radius: 8px;
-        padding: 1rem;
-        font-style: italic;
-        color: #E2E8F0;
-        margin-top: 0.5rem;
+    .stButton>button:hover {
+        background: linear-gradient(135deg, #9333EA 0%, #6D28D9 100%);
+        transform: translateY(-1px);
+        box-shadow: 0 6px 20px rgba(124, 58, 237, 0.5);
+    }
+
+    /* Tags & Badges */
+    .badge-tag {
+        background: rgba(168, 85, 247, 0.15);
+        border: 1px solid rgba(168, 85, 247, 0.3);
+        color: #E9D5FF;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 0.78rem;
+        font-weight: 500;
+        display: inline-block;
+        margin-right: 6px;
+        margin-top: 6px;
+    }
+    
+    /* Input Inputs & Selectboxes Styling */
+    .stTextInput input, .stSelectbox select, .stTextArea textarea {
+        background-color: rgba(15, 23, 42, 0.8) !important;
+        border: 1px solid #334155 !important;
+        color: #F8FAFC !important;
+        border-radius: 8px !important;
     }
     </style>
 """, unsafe_allow_html=True)
 
 # ==========================================
-# 2. SESSION STATE MANAGEMENT & DATABASES
+# 2. VOICE SYNTHESIS HELPER (FIXES AUDIO)
+# ==========================================
+@st.cache_data(show_spinner=False)
+def generate_speech_audio(text_script: str, lang="en", tld="com"):
+    """Generates real spoken voice audio using gTTS."""
+    tts = gTTS(text=text_script, lang=lang, tld=tld, slow=False)
+    fp = io.BytesIO()
+    tts.write_to_fp(fp)
+    fp.seek(0)
+    return fp.read()
+
+# ==========================================
+# 3. SESSION STATE MANAGEMENT & DATABASES
 # ==========================================
 if "authenticated" not in st.session_state:
     st.session_state.authenticated = False
@@ -148,10 +181,8 @@ EROTIC_TAXONOMY = [
     "Roleplay & Personas", "Slow Dancing", "BDSM/Kink-Friendly", "Late-Night Unwind"
 ]
 
-# SAFE ZONES DATABASE
 SAFE_ZONES = ["All Locations (GPS Radius)", "Artisan Coffee Lounge (Downtown)", "Wellness & Spa Pavilion", "Botanical Gardens Lounge"]
 
-# MOCK NEARBY SINGLES BEACONS
 MOCK_NEARBY_SINGLES = [
     {
         "id": "Beacon-88A",
@@ -187,7 +218,6 @@ MOCK_NEARBY_SINGLES = [
     }
 ]
 
-# EROTIC CONTEXT QUESTIONS DATABASE
 EROTIC_CONTEXT_QUESTIONS = {
     "Cognitive Load & Tasks": "I find it hard to feel desire or reach climax if I have unfinished chores, work emails, or mental stress lingering.",
     "Emotional Closeness": "I need to feel emotionally connected, appreciated, and close before I feel open to deep physical release.",
@@ -196,7 +226,6 @@ EROTIC_CONTEXT_QUESTIONS = {
     "Novelty & Playfulness": "Playful teasing, unexpected affection, changing locations, or roleplay easily activates my arousal."
 }
 
-# FEMALE SELF-EXPLORATION & CLIMAX GUIDED MODULES
 FEMALE_EXPLORATION_MODULES = {
     "Phase 1: Zero-Pressure Somatic Mapping": {
         "description": "A gentle journey mapping non-genital erogenous zones to awaken body awareness without expectation of performance.",
@@ -220,7 +249,6 @@ FEMALE_EXPLORATION_MODULES = {
     }
 }
 
-# PARTNER DECK DATABASE
 CARD_DECK = {
     "Tier 1: Restorative & Low Energy (Zero Pressure)": [
         "15-Minute Shoulder & Neck Rub", "Shared Warm Bath or Shower", "Couch Cuddle & Phone-Free Chat",
@@ -235,14 +263,12 @@ CARD_DECK = {
     ]
 }
 
-# VOICE PROFILES MAPPING
 VOICE_PROFILES = {
     "🇦🇺 Grounded & Deep (Australian Accent)": {"lang": "en", "tld": "com.au"},
     "🇬🇧 Warm & Expressive (British Accent)": {"lang": "en", "tld": "co.uk"},
     "🇺🇸 Calm & Clear (US Accent)": {"lang": "en", "tld": "com"}
 }
 
-# CONTENT LIBRARY DATA
 LIBRARY_DATA = [
     {
         "id": 1,
@@ -250,9 +276,9 @@ LIBRARY_DATA = [
         "category": "Somatic & Pelvic PT",
         "duration": 5,
         "desc": "Diaphragmatic breathing and reverse Kegel cues to release deep involuntary pelvic guarding.",
-        "type": "Audio Guide",
+        "type": "Spoken Voice Audio Guide",
         "tags": ["Pelvic Pain", "Relaxation", "Daily Routine"],
-        "audio_url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+        "script": "Welcome to your 5-minute pelvic floor unwinding session. Place one hand on your chest and one on your lower abdomen. Take a deep, slow breath in through your nose, letting your belly expand fully. As you exhale slowly through your mouth, visualize your pelvic floor softening, dropping, and completely letting go of tension. Continue breathing at this slow, restful pace..."
     },
     {
         "id": 2,
@@ -260,9 +286,9 @@ LIBRARY_DATA = [
         "category": "Sensate Focus & Desire",
         "duration": 12,
         "desc": "Guided partner exercise focusing purely on tactile sensations without any pressure for arousal.",
-        "type": "Couples Audio",
+        "type": "Spoken Voice Audio Guide",
         "tags": ["Couples", "Low Pressure", "Intimacy"],
-        "audio_url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
+        "script": "Welcome to Sensate Focus. This exercise is designed to remove all performance pressure. Sit or lie comfortably together. Partner A, begin by using soft fingertip touch across Partner B's shoulders and back. Focus purely on the texture of skin, warmth, and breathing. There is no destination, no goal, and no expectation of sexual intimacy. Simply enjoy the present physical touch..."
     },
     {
         "id": 3,
@@ -270,9 +296,9 @@ LIBRARY_DATA = [
         "category": "Micro-Education",
         "duration": 4,
         "desc": "Why you might not feel spontaneous desire—and how context creates readiness.",
-        "type": "Educational Audio",
+        "type": "Spoken Educational Voice",
         "tags": ["Psychology", "Desire"],
-        "audio_url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
+        "script": "Many adults assume sexual desire should appear spontaneously, like hunger. However, research shows that over half of women experience responsive desire. This means desire emerges only after the brain perceives safety, warmth, relaxation, and pleasurable context. You are not broken if you don't feel spontaneous desire; your nervous system simply requires the right environment first..."
     },
     {
         "id": 4,
@@ -280,9 +306,9 @@ LIBRARY_DATA = [
         "category": "Communication Scripts",
         "duration": 3,
         "desc": "Word-for-word templates to communicate discomfort or fatigue to a partner with care.",
-        "type": "Interactive Script",
+        "type": "Interactive Voice Template",
         "tags": ["Boundaries", "Couples"],
-        "audio_url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3"
+        "script": "Here is a gentle communication template you can use with your partner: 'I love being close to you, but my body is feeling tense and exhausted tonight. Can we focus on cuddling and breathing together without any expectation of going further?' Expressing boundaries early builds deep safety and trust."
     },
     {
         "id": 5,
@@ -290,17 +316,13 @@ LIBRARY_DATA = [
         "category": "Somatic & Pelvic PT",
         "duration": 7,
         "desc": "Transition out of fight-or-flight posture before heading home or attempting intimacy.",
-        "type": "Audio Guide",
+        "type": "Spoken Voice Audio Guide",
         "tags": ["Stress", "Nervous System"],
-        "audio_url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3"
+        "script": "Pause where you are. Unclench your jaw. Drop your shoulders down and away from your ears. Take a deep breath in, hold for two seconds, and exhale with a long, slow sigh. You are transitioning out of work mode. Allow your muscle tone to relax and your nervous system to return to a calm state of safety..."
     }
 ]
 
-# ==========================================
-# 3. HELPER FUNCTIONS
-# ==========================================
 def generate_pdf_report(pain, stress, energy, active_day):
-    """Generates a formatted clinical PDF progress report using FPDF."""
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font("Helvetica", "B", 16)
@@ -332,15 +354,13 @@ def generate_pdf_report(pain, stress, energy, active_day):
     return pdf.output()
 
 # ==========================================
-# 4. SIDEBAR NAVIGATION & AUTHENTICATION
+# 4. SIDEBAR NAVIGATION
 # ==========================================
-st.sidebar.title("🧘‍♀️ Aura Health")
+st.sidebar.title("🌿 Aura Health")
 st.sidebar.caption("Mind, Body & Discovery Platform")
 
 if st.session_state.authenticated:
     st.sidebar.markdown("---")
-    
-    # MODE SWITCHER IN SIDEBAR
     st.sidebar.subheader("⚙️ Account Mode")
     st.session_state.user_mode = st.sidebar.radio(
         "Active Mode:",
@@ -349,12 +369,7 @@ if st.session_state.authenticated:
     )
 
     st.sidebar.markdown("---")
-    
-    nav_items = [
-        "Dashboard & Check-In", 
-        "Content Library",
-        "Erotic Context Profile"
-    ]
+    nav_items = ["Dashboard & Check-In", "Content Library", "Erotic Context Profile"]
 
     if st.session_state.user_mode == "Singles Proximity Mode":
         nav_items.append("📍 Proximity & Discovery")
@@ -393,38 +408,27 @@ else:
     nav_choice = "Auth"
 
 # ==========================================
-# 5. SCREEN 0: AUTHENTICATION & CONSENT
+# 5. SCREEN 0: AUTHENTICATION
 # ==========================================
 if not st.session_state.authenticated:
     st.title("Welcome to Aura 🌿")
-    st.subheader("Integrated Mind, Body, and Partner Well-being")
+    st.caption("Integrated Mind, Body, and Partner Well-being")
 
     col1, col2 = st.columns([1, 1])
 
     with col1:
-        st.markdown("### Secure Sign-In")
+        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        st.subheader("Secure Sign-In")
         email = st.text_input("Email Address", value="alex@aura-health.app")
         password = st.text_input("Password", type="password", value="••••••••••••")
         
-        st.markdown("### 👩‍❤️‍👨 Partner Link (Optional at Login)")
+        st.markdown("#### 👩‍❤️‍👨 Partner Link (Optional)")
         partner_input_at_login = st.text_input(
             "Partner Invite Code", 
-            placeholder="e.g. AURA-8F3K (Leave blank if connecting later or using Singles Mode)",
-            help="If your partner gave you a link code, enter it here to connect your accounts immediately."
+            placeholder="e.g. AURA-8F3K",
+            help="If your partner gave you a link code, enter it here to connect."
         ).strip().upper()
 
-        st.markdown("### Privacy & Sensitive Data Consent")
-        st.markdown("""
-            <div class="legal-box">
-            <b>PRIVACY & SENSITIVE DATA CONSENT (GDPR Art. 9 / HIPAA / POPIA)</b><br><br>
-            Aura processes Special Category Health Data. Before proceeding, you must review and consent:<br><br>
-            <b>1. Sensitive Data Collected:</b> Pelvic muscle tone ratings, dyspareunia severity, stress metrics, and partner connection signals.<br>
-            <b>2. Zero-Knowledge Architecture:</b> Intimacy logs and pelvic notes are client-side encrypted via AES-256 GCM.<br>
-            <b>3. Double-Blind Isolation:</b> Unmatched partner and singles desire selections are never exposed or transmitted.<br>
-            <b>4. No Data Monetization:</b> Aura will NEVER sell, rent, or trade your health data.
-            </div>
-        """, unsafe_allow_html=True)
-        
         consent = st.checkbox("I explicitly consent to Aura processing my health and pelvic data.")
 
         if st.button("Enter Secure Portal"):
@@ -442,17 +446,18 @@ if not st.session_state.authenticated:
                     st.rerun()
             else:
                 st.error("Explicit consent is required to access sensitive pelvic features.")
+        st.markdown('</div>', unsafe_allow_html=True)
 
     with col2:
         st.markdown("""
-            <div class="metric-card">
-            <h4>Pillars of Clinical & Discovery Care</h4>
+            <div class="accent-card">
+            <h4>Pillars of Clinical Care & Discovery</h4>
             <ul>
+                <li><b>Spoken Voice Sessions:</b> Dynamic voice narration for pelvic floor unwinding.</li>
                 <li><b>Body:</b> Pelvic floor down-training & physical therapy logging.</li>
-                <li><b>Mind & Exploration:</b> Step-by-step female self-stimulation & climax guides with voice synthesis.</li>
+                <li><b>Mind & Exploration:</b> Guided female self-stimulation with voice synthesis.</li>
                 <li><b>Proximity Discovery:</b> Double-blind desire matching for singles nearby.</li>
-                <li><b>Partner Sync:</b> Double-blind desire matching & Sensate Focus guides for couples.</li>
-                <li><b>Analytics:</b> One-click PDF/CSV progress reports for physical therapists.</li>
+                <li><b>Clinician Exports:</b> One-click PDF progress reports.</li>
             </ul>
             </div>
         """, unsafe_allow_html=True)
@@ -460,13 +465,13 @@ if not st.session_state.authenticated:
         st.markdown(f"""
             <div class="prompt-card">
             <b>🔑 Your Partner Invite Code:</b><br>
-            <h3 style="color: #A855F7; margin: 0.25rem 0;">{st.session_state.user_partner_code}</h3>
-            Share this code with your partner so they can enter it when signing in!
+            <h3 style="color: #C084FC; margin: 0.25rem 0;">{st.session_state.user_partner_code}</h3>
+            Share this code with your partner so they can enter it when signing in.
             </div>
         """, unsafe_allow_html=True)
 
 # ==========================================
-# 6. SCREEN 1: DASHBOARD & TODAY
+# 6. SCREEN 1: DASHBOARD & CHECK-IN
 # ==========================================
 elif nav_choice == "Dashboard & Check-In":
     st.title(f"Welcome Back, {st.session_state.user_name} 🌿")
@@ -481,41 +486,31 @@ elif nav_choice == "Dashboard & Check-In":
 
     st.markdown("---")
 
-    # DYNAMIC RECOMMENDATION HOOK
-    st.subheader("🎯 Recommended for You Right Now")
+    # DYNAMIC RECOMMENDATION HOOK WITH REAL SPOKEN VOICE
+    st.subheader("🎯 Recommended Spoken Session Right Now")
     
-    if st.session_state.pain_level >= 5 or st.session_state.stress_level >= 7:
-        st.warning("⚠️ **High Physical Tension / Guarding Detected**")
-        c1, c2 = st.columns([3, 1])
-        with c1:
-            st.markdown("### 🎧 5-Minute Pelvic Floor Unwinding")
-            st.write("Your logged telemetry indicates involuntary pelvic guarding. Spend 5 minutes in a supported posture with reverse Kegel cues.")
-        with c2:
-            if st.button("Start Audio Session", type="primary", key="dash_hook_1"):
-                st.audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3")
-
-    elif st.session_state.energy_level <= 3:
-        st.info("🔋 **Low Energy State**")
-        c1, c2 = st.columns([3, 1])
-        with c1:
-            st.markdown("### 🎧 Post-Work Nervous System Decompression")
-            st.write("Transition out of fight-or-flight posture before heading home or attempting social activity.")
-        with c2:
-            if st.button("Start Audio Session", type="primary", key="dash_hook_2"):
-                st.audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3")
+    if st.session_state.pain_level >= 5 or st.session_state.stress_level >= 5:
+        st.markdown('<div class="accent-card">', unsafe_allow_html=True)
+        st.write("⚠️ **High Physical Tension / Guarding Detected**")
+        st.markdown("### 🎙️ 5-Minute Pelvic Floor Unwinding")
+        st.write("Your logged telemetry indicates involuntary pelvic guarding. Listen to this voice-guided session.")
+        
+        voice_bytes = generate_speech_audio(LIBRARY_DATA[0]["script"])
+        st.audio(voice_bytes, format="audio/mp3")
+        st.markdown('</div>', unsafe_allow_html=True)
     else:
-        st.success("✨ **Balanced State**")
-        c1, c2 = st.columns([3, 1])
-        with c1:
-            st.markdown("### 🎧 Sensate Focus: Touch Without Goal")
-            st.write("You are reporting low stress and comfort today. Ideal timing for a low-pressure connection practice.")
-        with c2:
-            if st.button("Start Audio Session", type="primary", key="dash_hook_3"):
-                st.audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3")
+        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        st.write("✨ **Balanced State**")
+        st.markdown("### 🎙️ Sensate Focus: Touch Without Goal")
+        st.write("You are reporting low stress today. Ideal timing for a low-pressure connection practice.")
+        
+        voice_bytes = generate_speech_audio(LIBRARY_DATA[1]["script"])
+        st.audio(voice_bytes, format="audio/mp3")
+        st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown("---")
 
-    # MULTI-DAY PROGRESSION ARC & DAILY FORM
+    # MULTI-DAY PROGRESSION & DAILY FORM
     col_a, col_b = st.columns([1, 1])
 
     with col_a:
@@ -524,10 +519,10 @@ elif nav_choice == "Dashboard & Check-In":
         with st.expander("Program: **7 Days to Pelvic Comfort**", expanded=True):
             st.progress(current_day / 7, text=f"Day {current_day} of 7 Completed")
             st.markdown(f"**Today's Module (Day {current_day}):** Somatic Release & Soft Lengthening")
-            st.caption("Duration: 7 mins • Guided Diaphragmatic Audio")
-            if st.button("Resume Program Module", key="resume_arc"):
-                st.info(f"Loading Day {current_day} exercises...")
-                st.audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3")
+            st.caption("Duration: 7 mins • Spoken Voice Audio")
+            if st.button("Resume Program Module"):
+                voice_bytes = generate_speech_audio(LIBRARY_DATA[0]["script"])
+                st.audio(voice_bytes, format="audio/mp3")
 
     with col_b:
         st.subheader("📝 60-Second Daily Check-In")
@@ -536,8 +531,8 @@ elif nav_choice == "Dashboard & Check-In":
             st.session_state.stress_level = st.slider("Mental Stress & Noise (1 = Calm, 10 = Overwhelmed)", 1, 10, st.session_state.stress_level)
             st.session_state.energy_level = st.slider("Energy Level (1 = Exhausted, 10 = Energized)", 1, 10, st.session_state.energy_level)
             st.session_state.desire_state = st.selectbox("Current Desire Readiness", ["Open & Curious", "Responsive Only", "Neutral", "Disconnected / Guarded"], index=2)
-            brake = st.selectbox("Identify Active Inhibitor (The Brake)", ["None", "Fatigue", "Physical Discomfort", "Pain Anticipation", "Overstimulated", "Emotional Distance"])
-            note = st.text_area("Encrypted Private Journal Entry", placeholder="Notes on comfort, stress, or emotional state...")
+            brake = st.selectbox("Identify Active Inhibitor", ["None", "Fatigue", "Physical Discomfort", "Pain Anticipation", "Overstimulated", "Emotional Distance"])
+            note = st.text_area("Encrypted Private Journal Entry", placeholder="Notes on comfort...")
 
             if st.form_submit_button("Save Encrypted Telemetry"):
                 new_entry = {
@@ -553,47 +548,36 @@ elif nav_choice == "Dashboard & Check-In":
                 st.success("✅ Log saved securely!")
 
 # ==========================================
-# 7. SCREEN 2: CONTENT LIBRARY
+# 7. SCREEN 2: CONTENT LIBRARY (SPOKEN VOICE)
 # ==========================================
 elif nav_choice == "Content Library":
     st.title("📚 Content Library")
-    st.caption("Guided somatic audio, clinical exercises, micro-education, and relational protocols.")
+    st.caption("Listen to real spoken voice-narrated audio guides for somatic unwinding and desire education.")
 
-    search_q = st.text_input("🔍 Search tracks", placeholder="e.g., Pelvic, Touch, Stress...")
-    
-    col_a, col_b = st.columns(2)
-    with col_a:
-        cat_filter = st.selectbox(
-            "Category Filter",
-            ["All Categories", "Somatic & Pelvic PT", "Sensate Focus & Desire", "Micro-Education", "Communication Scripts"]
-        )
-    with col_b:
-        max_duration = st.slider("Max Duration (Minutes)", 1, 20, 20)
+    selected_voice_label = st.selectbox("Select Narrator Accent:", list(VOICE_PROFILES.keys()))
+    voice_config = VOICE_PROFILES[selected_voice_label]
 
     st.markdown("---")
 
-    filtered_items = [
-        item for item in LIBRARY_DATA
-        if (cat_filter == "All Categories" or item["category"] == cat_filter)
-        and item["duration"] <= max_duration
-        and (search_q.lower() in item["title"].lower() or search_q.lower() in item["desc"].lower())
-    ]
-
-    if not filtered_items:
-        st.info("No content matches your selected filters.")
-    
-    for item in filtered_items:
-        with st.container():
-            c1, c2 = st.columns([3, 1])
-            with c1:
-                st.markdown(f"### {item['title']}")
-                st.caption(f"**{item['category']}** • 🕒 {item['duration']} mins • 🏷️ {item['type']}")
-                st.write(item['desc'])
-                st.markdown(" ".join([f"`#{tag}`" for tag in item['tags']]))
-            with c2:
-                if st.button(f"Play Track", key=f"play_{item['id']}"):
-                    st.audio(item["audio_url"])
-            st.markdown("---")
+    for item in LIBRARY_DATA:
+        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        c1, c2 = st.columns([3, 1])
+        with c1:
+            st.markdown(f"### {item['title']}")
+            st.caption(f"**{item['category']}** • 🕒 {item['duration']} mins • 🗣️ {item['type']}")
+            st.write(item['desc'])
+            for tag in item['tags']:
+                st.markdown(f'<span class="badge-tag">#{tag}</span>', unsafe_allow_html=True)
+        with c2:
+            if st.button(f"🎙️ Play Voice Audio", key=f"play_{item['id']}"):
+                with st.spinner("Synthesizing voice narration..."):
+                    audio_data = generate_speech_audio(
+                        item["script"], 
+                        lang=voice_config["lang"], 
+                        tld=voice_config["tld"]
+                    )
+                    st.audio(audio_data, format="audio/mp3")
+        st.markdown('</div>', unsafe_allow_html=True)
 
 # ==========================================
 # 8. SCREEN 3: PROXIMITY & DISCOVERY (SINGLES)
@@ -609,7 +593,7 @@ elif nav_choice == "📍 Proximity & Discovery":
         radius_km = st.slider("Scan Radius (Kilometers)", min_value=0.5, max_value=20.0, value=5.0, step=0.5)
         selected_safe_zone = st.selectbox("Safe Zone / Venue Filter", SAFE_ZONES)
         req_verified = st.checkbox("Require Verified Beacon Badge Only", value=True)
-        min_shared_tags = st.slider("Minimum Mutual Erotic Desires Required", min_value=1, max_value=5, value=1)
+        min_shared_tags = st.slider("Minimum Mutual Desires Required", min_value=1, max_value=5, value=1)
 
     with col_beacon:
         st.markdown("### 2. Your Active Readiness Beacon")
@@ -617,10 +601,10 @@ elif nav_choice == "📍 Proximity & Discovery":
             "What is your capacity right now?",
             ["💬 Open to Talk & Coffee", "🧘 Open to Touch (Zero Pressure)", "🔥 Open to Intimacy", "🔋 Energy Low (Discovery Paused)"]
         )
-        beacon_ttl = st.selectbox("Beacon Duration (Auto-Expires)", ["2 Hours", "4 Hours", "8 Hours"])
+        beacon_ttl = st.selectbox("Beacon Duration", ["2 Hours", "4 Hours", "8 Hours"])
         
         if st.session_state.partner_beacon != "🔋 Energy Low (Discovery Paused)":
-            st.success(f"🟢 Beacon active for {beacon_ttl} | Visible to verified singles within {radius_km} km")
+            st.success(f"🟢 Beacon active for {beacon_ttl} | Visible within {radius_km} km")
         else:
             st.warning("🔴 Beacon paused. You are invisible to nearby users.")
 
@@ -669,7 +653,7 @@ elif nav_choice == "📍 Proximity & Discovery":
                     </div>
                 """, unsafe_allow_html=True)
                 if st.button(f"Send Encrypted Signal to {match['id']}", key=f"sig_{match['id']}"):
-                    st.success(f"Private signal sent to {match['id']}! A secure chat window will open once accepted.")
+                    st.success(f"Private signal sent to {match['id']}!")
         else:
             st.info("No nearby beacons currently match your readiness status and desire threshold.")
 
@@ -762,29 +746,24 @@ elif nav_choice == "Erotic Context Profile":
 # 11. SCREEN 6: AI SOMATIC COACH
 # ==========================================
 elif nav_choice == "AI Somatic Coach":
-    st.title("🤖 Adaptive Somatic AI Coach")
+    st.title("🤖 Adaptive Somatic Voice Coach")
     st.caption("Neuroscience-backed unwinding protocols based on the Dual-Control Model.")
 
     p_score = st.session_state.pain_level
     s_score = st.session_state.stress_level
 
     st.markdown(f"""
-        <div class="metric-card">
+        <div class="glass-card">
         <h4>Diagnostic Telemetry for Today</h4>
         <p><b>Pelvic Discomfort Score:</b> {p_score}/10 | <b>Stress Score:</b> {s_score}/10</p>
         </div>
     """, unsafe_allow_html=True)
 
-    st.subheader("🛠️ Your Custom 7-Minute Unwind Stack")
-    if p_score >= 5 and s_score >= 5:
-        st.warning("Dual High Tension Detected (Mind + Pelvis). Initiating Deep Unwind.")
-        st.markdown("""
-        * **Minute 0–2 (Diaphragmatic Reset):** Inhale 4s, hold 2s, exhale 6s with explicit pelvic floor release.
-        * **Minute 2–4 (Somatic Body Scan):** Unclench jaw, drop shoulders, soften gluteal muscles.
-        * **Minute 4–7 (Audio Grounding):** Launching *5-Minute Pelvic Floor Unwinding* in Content Library.
-        """)
-    else:
-        st.success("Tension Metrics Balanced. Ideal Foundation for Rest or Exploration.")
+    if st.button("🎙️ Generate & Play Custom Somatic Voice Unwind"):
+        custom_script = f"Hello. I see your pelvic tension score is currently at {p_score} out of 10, and your stress score is {s_score}. Take a slow breath in through your nose. Release your jaw and shoulders. Allow your belly to expand, and completely soften your pelvic floor muscles as you exhale."
+        with st.spinner("Synthesizing personalized voice session..."):
+            audio_data = generate_speech_audio(custom_script)
+            st.audio(audio_data, format="audio/mp3")
 
 # ==========================================
 # 12. SCREEN 7: BODY (PELVIC & PT TRACKER)
@@ -797,7 +776,9 @@ elif nav_choice == "Body (Pelvic & PT Tracker)":
 
     with tab1:
         st.subheader("Deep Somatic Unwinding & Pelvic Drop")
-        st.audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3")
+        if st.button("🎙️ Play Spoken Unwinding Session"):
+            audio_bytes = generate_speech_audio(LIBRARY_DATA[0]["script"])
+            st.audio(audio_bytes, format="audio/mp3")
 
     with tab2:
         st.subheader("Diaphragmatic Breath Visualizer")
@@ -855,7 +836,7 @@ elif nav_choice == "Mind & Self-Exploration":
     col1, col2 = st.columns([1, 1])
 
     with col1:
-        st.markdown(f"### 📋 Overview & Guided Steps")
+        st.markdown("### 📋 Overview & Guided Steps")
         st.write(f"*{selected_mod['description']}*")
         for step in selected_mod["steps"]:
             st.markdown(f"""
@@ -867,11 +848,12 @@ elif nav_choice == "Mind & Self-Exploration":
         if st.button("▶️ Synthesize & Start Voice-Guided Narration"):
             with st.spinner("Synthesizing narration with gTTS..."):
                 voice_config = VOICE_PROFILES[selected_voice_label]
-                tts = gTTS(text=selected_mod["script"], lang=voice_config["lang"], tld=voice_config["tld"], slow=False)
-                fp = io.BytesIO()
-                tts.write_to_fp(fp)
-                fp.seek(0)
-                st.audio(fp, format="audio/mp3")
+                audio_bytes = generate_speech_audio(
+                    selected_mod["script"], 
+                    lang=voice_config["lang"], 
+                    tld=voice_config["tld"]
+                )
+                st.audio(audio_bytes, format="audio/mp3")
 
     with col2:
         st.markdown("### 🎙️ Full Narration Script")
@@ -952,7 +934,7 @@ elif nav_choice == "Clinician Corner & PDF":
 
     with c2:
         st.subheader("Export Clinical Reports")
-        st.write("Generate a formatted clinical PDF or CSV report detailing pain trends, stress metrics, and program adherence for your next appointment.")
+        st.write("Generate a formatted clinical PDF report detailing pain trends and stress metrics.")
         
         pdf_bytes = generate_pdf_report(
             st.session_state.pain_level,
