@@ -110,7 +110,7 @@ EROTIC_CONTEXT_QUESTIONS = {
     "Novelty & Playfulness": "Playful teasing, unexpected affection, changing locations, or roleplay easily activates my desire."
 }
 
-# AUDIO SCRIPTS DATABASE
+# AUDIO SCRIPTS DATABASE (GENERAL)
 AUDIO_SCRIPTS = {
     "Understanding Responsive Desire": (
         "Welcome. Many people expect sexual desire to happen spontaneously—like a sudden bolt of lightning. "
@@ -142,6 +142,59 @@ AUDIO_SCRIPTS = {
     )
 }
 
+# FEMALE SELF-EXPLORATION GUIDED MODULES
+FEMALE_EXPLORATION_MODULES = {
+    "Phase 1: Zero-Pressure Somatic Mapping": {
+        "description": "A gentle journey mapping non-genital erogenous zones to awaken body awareness without expectation.",
+        "steps": [
+            "Step 1: Set the scene—warm lighting, comfortable support under your knees, and a drop of preferred oil or lotion.",
+            "Step 2: Close your eyes and spend 2 minutes using light fingertip pressure along your collarbones, neck, and inner arms.",
+            "Step 3: Notice micro-sensations—temperature, tingling, or goosebumps—without trying to force arousal.",
+            "Step 4: Rest your palm gently over your lower abdomen, syncing your breath with the rise and fall of your belly."
+        ],
+        "script": (
+            "Welcome to your private self-exploration space. Today there is no goal, no timer, and no expectation of climax. "
+            "Begin by making your body completely comfortable. Place a pillow beneath your knees and soften your jaw. "
+            "Bring your hands to your collarbones. Using light, feather-like strokes, trace down toward your shoulders and inner arms. "
+            "Pay attention only to the physical texture of your skin and the warmth of your hands. "
+            "Move down to your ribcage, then gently rest both hands on your lower belly. As you breathe in, feel your belly expand into your hands. "
+            "As you exhale, let your pelvic floor drop completely soft. You are entirely safe, unhurried, and in control."
+        )
+    },
+    "Phase 2: Rhythmic External Stimulation": {
+        "description": "Guided technique exploring rhythmic, indirect clitoral stimulation and varied pressure patterns.",
+        "steps": [
+            "Step 1: Apply a generous amount of warm lubricant around the labia and outer vulvar tissue.",
+            "Step 2: Begin with gentle circular motions along the outer labia, avoiding direct glans contact initially.",
+            "Step 3: Transition to a slow 'clock' pattern around the clitoral hood—stopping at 12, 3, 6, and 9 o'clock.",
+            "Step 4: Layer in diaphragmatic exhales to keep the pelvic floor muscles long and unclenched as sensation builds."
+        ],
+        "script": (
+            "Ensure you have plenty of warm lubricant ready. Begin by applying it softly around your outer labia with slow, sweeping strokes. "
+            "Resist the urge to go directly to the clitoral glans. Instead, create gentle circles around the surrounding tissue, "
+            "awakening the rich network of nerve endings beneath the surface. Now, imagine a clockface over your clitoral hood. "
+            "Pause with light pressure at twelve o'clock, then circle down to three, six, and nine. "
+            "If your mind begins to wander or analyze, gently bring your focus back to the physical feeling under your fingertips. "
+            "Keep your breath long and steady into your lower belly."
+        )
+    },
+    "Phase 3: Erotica & Mind-Body Alignment": {
+        "description": "Sensory narrative blending breathwork with imaginative contextual arousal.",
+        "steps": [
+            "Step 1: Lie back in a comfortable, relaxed posture with dim lighting.",
+            "Step 2: Focus on the auditory narration, picturing the sensory details vividly in your mind.",
+            "Step 3: Allow your body to respond naturally, adjusting your rhythm and touch to match your internal state."
+        ],
+        "script": (
+            "Imagine lying on soft linen sheets in a secluded room overlooking a warm, rain-swept garden. "
+            "The air is fragrant with jasmine and woodsmoke. You feel completely relaxed, free from all responsibilities and watchful eyes. "
+            "A slow, rhythmic warmth begins deep in your pelvis, expanding outward with every deep exhale. "
+            "Your body feels weightless yet deeply connected to the surface beneath you. Allow yourself to lean into this sensation, "
+            "touching your body with deep appreciation, patience, and absolute freedom."
+        )
+    }
+}
+
 # PARTNER DECK DATABASE
 CARD_DECK = {
     "Tier 1: Restorative & Low Energy (Zero Pressure)": [
@@ -163,7 +216,7 @@ CARD_DECK = {
 
 # VOICE PROFILES MAPPING (gTTS accents)
 VOICE_PROFILES = {
-    "🇦🇺 Grounded & Deep / Accent (Australian)": {"lang": "en", "tld": "com.au"},
+    "🇦🇺 Grounded & Deep (Australian Accent)": {"lang": "en", "tld": "com.au"},
     "🇬🇧 Warm & Expressive (British Accent)": {"lang": "en", "tld": "co.uk"},
     "🇺🇸 Calm & Clear (US Accent)": {"lang": "en", "tld": "com"},
     "🇮🇳 Soft & Guided (Indian English Accent)": {"lang": "en", "tld": "co.in"},
@@ -185,7 +238,7 @@ if st.session_state.authenticated:
             "Erotic Context Profile",
             "AI Somatic Coach", 
             "Body (Pelvic & PT Tracker)", 
-            "Mind (Audio & Multi-Voice)", 
+            "Mind & Self-Exploration", 
             "Sensate Focus & Partner Deck", 
             "Weekly Analytics & PT Report", 
             "Privacy & Security"
@@ -243,7 +296,7 @@ if not st.session_state.authenticated:
             <h4>Pillars of Clinical Care</h4>
             <ul>
                 <li><b>Body:</b> Pelvic floor down-training & physical therapy logging.</li>
-                <li><b>Mind:</b> Multi-voice audio grounding & Dual-Control Model science.</li>
+                <li><b>Mind & Exploration:</b> Guided female self-stimulation, erotica & multi-voice audio.</li>
                 <li><b>Context:</b> Erotic context profile mapping (Brakes vs Accelerators).</li>
                 <li><b>Partner:</b> Double-blind desire matching & Sensate Focus guides.</li>
                 <li><b>Analytics:</b> One-click PDF/CSV reports for physical therapists.</li>
@@ -331,7 +384,7 @@ elif nav_choice == "Dashboard & Check-In":
             with c2:
                 if m_stress >= 6:
                     st.warning("⚠️ High Stress Active")
-                    st.write("Open **Mind** to generate decompression tracks.")
+                    st.write("Open **Mind & Self-Exploration** to generate decompression tracks.")
                 else:
                     st.success("🟢 Stress Managed")
                     st.write("Mental noise is low today.")
@@ -355,7 +408,7 @@ elif nav_choice == "Dashboard & Check-In":
             """, unsafe_allow_html=True)
 
 # ==========================================
-# 6. SCREEN 2: EROTIC CONTEXT PROFILE (NEW)
+# 6. SCREEN 2: EROTIC CONTEXT PROFILE
 # ==========================================
 elif nav_choice == "Erotic Context Profile":
     st.title("✨ Custom Erotic Context Profile")
@@ -399,7 +452,6 @@ elif nav_choice == "Erotic Context Profile":
         )
         st.plotly_chart(fig, use_container_width=True)
 
-        # Highlight top brake/accelerator
         top_dim = profile_df.sort_values(by="Sensitivity Score", ascending=False).iloc[0]["Dimension"]
         st.info(f"💡 **Key Insight:** Your desire is most sensitive to **'{top_dim}'**. Focus on satisfying this condition before initiating intimacy.")
 
@@ -523,42 +575,92 @@ elif nav_choice == "Body (Pelvic & PT Tracker)":
             st.dataframe(pd.DataFrame(st.session_state.dilator_logs), use_container_width=True)
 
 # ==========================================
-# 9. SCREEN 5: MIND (MULTI-VOICE AUDIO)
+# 9. SCREEN 5: MIND & SELF-EXPLORATION
 # ==========================================
-elif nav_choice == "Mind (Audio & Multi-Voice)":
-    st.title("Mind: Multi-Voice Audio Generator")
-    st.caption("Select a track script and choose a voice profile to generate live voice audio.")
+elif nav_choice == "Mind & Self-Exploration":
+    st.title("Mind & Female Self-Exploration")
+    st.caption("Somatic audio grounding, responsive desire education, and guided female self-stimulation modules.")
 
-    selected_track = st.selectbox("Select Audio Module:", list(AUDIO_SCRIPTS.keys()))
-    selected_voice_label = st.selectbox("Choose Narrator Voice Profile:", list(VOICE_PROFILES.keys()))
+    tab1, tab2 = st.tabs(["🌸 Female Self-Exploration & Erotica", "🎧 General Audio Modules"])
 
-    col1, col2 = st.columns([1, 1])
+    # TAB 1: FEMALE SELF-EXPLORATION & EROTICA
+    with tab1:
+        st.subheader("Guided Female Self-Exploration & Somatic Touch")
+        st.caption("Step-by-step techniques and erotic audio stories designed for low-pressure arousal and somatic mapping.")
 
-    with col1:
-        st.markdown("### 🔊 Live Voice Generator")
+        selected_module_key = st.selectbox("Choose Exploration Module:", list(FEMALE_EXPLORATION_MODULES.keys()))
+        selected_mod = FEMALE_EXPLORATION_MODULES[selected_module_key]
         
-        if st.button("▶️ Generate & Play Live Audio"):
-            with st.spinner("Synthesizing narration in selected voice..."):
-                script_text = AUDIO_SCRIPTS[selected_track]
-                voice_config = VOICE_PROFILES[selected_voice_label]
-                
-                # Generate MP3 in-memory via gTTS
-                tts = gTTS(text=script_text, lang=voice_config["lang"], tld=voice_config["tld"], slow=False)
-                
-                fp = io.BytesIO()
-                tts.write_to_fp(fp)
-                fp.seek(0)
-                
-                st.audio(fp, format="audio/mp3")
-                st.success("Voice audio rendered successfully!")
+        selected_voice_label_f = st.selectbox("Choose Narrator Voice Profile:", list(VOICE_PROFILES.keys()), key="fem_voice_select")
 
-    with col2:
-        st.markdown(f"### 📄 Script Preview")
-        st.markdown(f"""
-            <div class="script-box">
-            "{AUDIO_SCRIPTS[selected_track]}"
-            </div>
-        """, unsafe_allow_html=True)
+        col1, col2 = st.columns([1, 1])
+
+        with col1:
+            st.markdown(f"### 📋 Overview & Guided Steps")
+            st.write(f"*{selected_mod['description']}*")
+            
+            for step in selected_mod["steps"]:
+                st.markdown(f"""
+                    <div class="prompt-card">
+                    <b>{step.split(':')[0]}:</b> {step.split(':')[1]}
+                    </div>
+                """, unsafe_allow_html=True)
+
+            st.markdown("---")
+            if st.button("▶️ Start Voice-Guided Audio Exploration", key="play_fem_audio"):
+                with st.spinner("Synthesizing voice narration..."):
+                    voice_config = VOICE_PROFILES[selected_voice_label_f]
+                    tts = gTTS(text=selected_mod["script"], lang=voice_config["lang"], tld=voice_config["tld"], slow=False)
+                    
+                    fp = io.BytesIO()
+                    tts.write_to_fp(fp)
+                    fp.seek(0)
+                    
+                    st.audio(fp, format="audio/mp3")
+                    st.success("Audio synthesized! Press play above and follow along at your own pace.")
+
+        with col2:
+            st.markdown("### 🎙️ Full Narration Script")
+            st.markdown(f"""
+                <div class="script-box">
+                "{selected_mod['script']}"
+                </div>
+            """, unsafe_allow_html=True)
+
+    # TAB 2: GENERAL AUDIO MODULES
+    with tab2:
+        st.subheader("General Audio & Decompression Vault")
+        st.caption("Select a track script and choose a voice profile to generate live voice audio.")
+
+        selected_track = st.selectbox("Select Audio Module:", list(AUDIO_SCRIPTS.keys()))
+        selected_voice_label = st.selectbox("Choose Narrator Voice Profile:", list(VOICE_PROFILES.keys()), key="gen_voice_select")
+
+        col_a, col_b = st.columns([1, 1])
+
+        with col_a:
+            st.markdown("### 🔊 Live Voice Generator")
+            
+            if st.button("▶️ Generate & Play Live Audio", key="play_gen_audio"):
+                with st.spinner("Synthesizing narration in selected voice..."):
+                    script_text = AUDIO_SCRIPTS[selected_track]
+                    voice_config = VOICE_PROFILES[selected_voice_label]
+                    
+                    tts = gTTS(text=script_text, lang=voice_config["lang"], tld=voice_config["tld"], slow=False)
+                    
+                    fp = io.BytesIO()
+                    tts.write_to_fp(fp)
+                    fp.seek(0)
+                    
+                    st.audio(fp, format="audio/mp3")
+                    st.success("Voice audio rendered successfully!")
+
+        with col_b:
+            st.markdown("### 📄 Script Preview")
+            st.markdown(f"""
+                <div class="script-box">
+                "{AUDIO_SCRIPTS[selected_track]}"
+                </div>
+            """, unsafe_allow_html=True)
 
 # ==========================================
 # 10. SCREEN 6: SENSATE FOCUS & PARTNER DECK
