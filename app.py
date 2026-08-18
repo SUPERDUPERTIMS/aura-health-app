@@ -12,13 +12,13 @@ from gtts import gTTS
 # 1. PAGE CONFIGURATION & PREMIUM THEMING
 # ==========================================
 st.set_page_config(
-    page_title="Aura | Somatic & Pelvic Health",
+    page_title="Aura | Somatic Pelvic & Intimacy Health",
     page_icon="🌿",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# Dark Mode Theme with Modern Glassmorphism
+# Dark Glassmorphism Custom CSS
 st.markdown("""
     <style>
     /* Main Background */
@@ -28,7 +28,7 @@ st.markdown("""
         font-family: 'Inter', sans-serif;
     }
     
-    /* Custom Card Styling */
+    /* Card Styles */
     .glass-card {
         background: rgba(30, 41, 59, 0.65);
         backdrop-filter: blur(12px);
@@ -67,16 +67,6 @@ st.markdown("""
         line-height: 1.6;
     }
 
-    .match-banner {
-        background: rgba(6, 78, 59, 0.6);
-        border: 1px solid #10B981;
-        color: #ECFDF5;
-        padding: 1.25rem;
-        border-radius: 12px;
-        margin-top: 1rem;
-        margin-bottom: 1rem;
-    }
-
     /* Buttons */
     .stButton>button {
         background: linear-gradient(135deg, #A855F7 0%, #7C3AED 100%);
@@ -96,7 +86,7 @@ st.markdown("""
         box-shadow: 0 6px 20px rgba(124, 58, 237, 0.5);
     }
 
-    /* Tags & Badges */
+    /* Badges */
     .badge-tag {
         background: rgba(168, 85, 247, 0.15);
         border: 1px solid rgba(168, 85, 247, 0.3);
@@ -110,7 +100,7 @@ st.markdown("""
         margin-top: 6px;
     }
     
-    /* Input Inputs & Selectboxes Styling */
+    /* Inputs */
     .stTextInput input, .stSelectbox select, .stTextArea textarea {
         background-color: rgba(15, 23, 42, 0.8) !important;
         border: 1px solid #334155 !important;
@@ -121,7 +111,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ==========================================
-# 2. VOICE SYNTHESIS HELPER (FIXES AUDIO)
+# 2. VOICE SYNTHESIS HELPER
 # ==========================================
 @st.cache_data(show_spinner=False)
 def generate_speech_audio(text_script: str, lang="en", tld="com"):
@@ -133,20 +123,18 @@ def generate_speech_audio(text_script: str, lang="en", tld="com"):
     return fp.read()
 
 # ==========================================
-# 3. SESSION STATE MANAGEMENT & DATABASES
+# 3. SESSION STATE MANAGEMENT
 # ==========================================
 if "authenticated" not in st.session_state:
     st.session_state.authenticated = False
 if "user_name" not in st.session_state:
     st.session_state.user_name = "Alex"
-if "user_mode" not in st.session_state:
-    st.session_state.user_mode = "Singles Proximity Mode"
 if "checkin_history" not in st.session_state:
     st.session_state.checkin_history = []
 if "dilator_logs" not in st.session_state:
     st.session_state.dilator_logs = []
 if "partner_beacon" not in st.session_state:
-    st.session_state.partner_beacon = "💬 Open to Talk & Coffee"
+    st.session_state.partner_beacon = "💬 Open to Talk & Cuddle"
 
 # Telemetry State
 if "pain_level" not in st.session_state:
@@ -164,60 +152,13 @@ if "my_intent" not in st.session_state:
 if "partner_intent" not in st.session_state:
     st.session_state.partner_intent = None
 
-# Partner & Proximity Initialization
+# Partner Link Initialization
 if "user_partner_code" not in st.session_state:
     st.session_state.user_partner_code = f"AURA-{secrets.token_hex(3).upper()}"
 if "linked_partner_id" not in st.session_state:
     st.session_state.linked_partner_id = None
-if "is_verified" not in st.session_state:
-    st.session_state.is_verified = True
-if "user_erotic_interests" not in st.session_state:
-    st.session_state.user_erotic_interests = ["Sensate Touch", "Mindful Breathing"]
 
-# EROTIC INTEREST TAXONOMY
-EROTIC_TAXONOMY = [
-    "Sensate Touch", "Mindful Breathing", "Erotic Audio Stories", 
-    "Aromatherapy & Massage", "Outdoor & Nature Dates", "Temperature Play", 
-    "Roleplay & Personas", "Slow Dancing", "BDSM/Kink-Friendly", "Late-Night Unwind"
-]
-
-SAFE_ZONES = ["All Locations (GPS Radius)", "Artisan Coffee Lounge (Downtown)", "Wellness & Spa Pavilion", "Botanical Gardens Lounge"]
-
-MOCK_NEARBY_SINGLES = [
-    {
-        "id": "Beacon-88A",
-        "verified": True,
-        "distance_km": 1.4,
-        "safe_zone": "Artisan Coffee Lounge (Downtown)",
-        "readiness": "💬 Open to Talk & Coffee",
-        "erotic_interests": ["Sensate Touch", "Mindful Breathing", "Outdoor & Nature Dates", "Erotic Audio Stories"]
-    },
-    {
-        "id": "Beacon-34B",
-        "verified": False,
-        "distance_km": 3.8,
-        "safe_zone": "All Locations (GPS Radius)",
-        "readiness": "💬 Open to Talk & Coffee",
-        "erotic_interests": ["Roleplay & Personas", "BDSM/Kink-Friendly", "Late-Night Unwind"]
-    },
-    {
-        "id": "Beacon-91C",
-        "verified": True,
-        "distance_km": 0.8,
-        "safe_zone": "Wellness & Spa Pavilion",
-        "readiness": "🧘 Open to Touch (Zero Pressure)",
-        "erotic_interests": ["Sensate Touch", "Aromatherapy & Massage", "Mindful Breathing"]
-    },
-    {
-        "id": "Beacon-52D",
-        "verified": True,
-        "distance_km": 2.1,
-        "safe_zone": "Artisan Coffee Lounge (Downtown)",
-        "readiness": "🔥 Open to Intimacy",
-        "erotic_interests": ["Sensate Touch", "Slow Dancing", "Aromatherapy & Massage"]
-    }
-]
-
+# Static Data & Taxonomies
 EROTIC_CONTEXT_QUESTIONS = {
     "Cognitive Load & Tasks": "I find it hard to feel desire or reach climax if I have unfinished chores, work emails, or mental stress lingering.",
     "Emotional Closeness": "I need to feel emotionally connected, appreciated, and close before I feel open to deep physical release.",
@@ -357,49 +298,33 @@ def generate_pdf_report(pain, stress, energy, active_day):
 # 4. SIDEBAR NAVIGATION
 # ==========================================
 st.sidebar.title("🌿 Aura Health")
-st.sidebar.caption("Mind, Body & Discovery Platform")
+st.sidebar.caption("Pelvic Therapy & Intimacy Platform")
 
 if st.session_state.authenticated:
     st.sidebar.markdown("---")
-    st.sidebar.subheader("⚙️ Account Mode")
-    st.session_state.user_mode = st.sidebar.radio(
-        "Active Mode:",
-        ["Singles Proximity Mode", "Couples Mode"],
-        key="sidebar_mode_select"
+    nav_choice = st.sidebar.radio(
+        "Navigation", 
+        [
+            "Dashboard & Check-In", 
+            "Content Library", 
+            "Partner Alignment & Sync",
+            "Erotic Context Profile", 
+            "AI Somatic Coach", 
+            "Body (Pelvic & PT Tracker)", 
+            "Mind & Self-Exploration", 
+            "Clinician Corner & PDF", 
+            "Privacy & Security"
+        ]
     )
-
-    st.sidebar.markdown("---")
-    nav_items = ["Dashboard & Check-In", "Content Library", "Erotic Context Profile"]
-
-    if st.session_state.user_mode == "Singles Proximity Mode":
-        nav_items.append("📍 Proximity & Discovery")
-        nav_items.append("Sensate Focus & Partner Deck")
-    else:
-        nav_items.append("Partner Double-Blind Sync")
-        nav_items.append("Sensate Focus & Partner Deck")
-
-    nav_items.extend([
-        "AI Somatic Coach", 
-        "Body (Pelvic & PT Tracker)", 
-        "Mind & Self-Exploration", 
-        "Clinician Corner & PDF", 
-        "Privacy & Security"
-    ])
-
-    nav_choice = st.sidebar.radio("Navigation", nav_items)
     
     st.sidebar.markdown("---")
     st.sidebar.subheader("🔒 Vault & Identity")
-    st.sidebar.success("AES-256 Vault: ACTIVE")
+    st.sidebar.success("AES-256 Local Vault: ACTIVE")
     
-    if st.session_state.user_mode == "Couples Mode":
-        if st.session_state.linked_partner_id:
-            st.sidebar.success(f"🔗 Linked: `{st.session_state.linked_partner_id}`")
-        else:
-            st.sidebar.warning("🔗 Partner: Not Linked")
+    if st.session_state.linked_partner_id:
+        st.sidebar.success(f"🔗 Linked: `{st.session_state.linked_partner_id}`")
     else:
-        status_badge = " Verified" if st.session_state.is_verified else " Unverified"
-        st.sidebar.info(f"🛡️ Discovery ID:{status_badge}")
+        st.sidebar.warning("🔗 Partner: Not Linked")
 
     if st.sidebar.button("Lock Portal / Log Out"):
         st.session_state.authenticated = False
@@ -412,7 +337,7 @@ else:
 # ==========================================
 if not st.session_state.authenticated:
     st.title("Welcome to Aura 🌿")
-    st.caption("Integrated Mind, Body, and Partner Well-being")
+    st.caption("Somatic Pelvic Health & Low-Pressure Intimacy Alignment")
 
     col1, col2 = st.columns([1, 1])
 
@@ -426,10 +351,10 @@ if not st.session_state.authenticated:
         partner_input_at_login = st.text_input(
             "Partner Invite Code", 
             placeholder="e.g. AURA-8F3K",
-            help="If your partner gave you a link code, enter it here to connect."
+            help="If your partner gave you a link code, enter it here to sync selections."
         ).strip().upper()
 
-        consent = st.checkbox("I explicitly consent to Aura processing my health and pelvic data.")
+        consent = st.checkbox("I explicitly consent to Aura processing my health and pelvic data locally.")
 
         if st.button("Enter Secure Portal"):
             if consent:
@@ -438,7 +363,6 @@ if not st.session_state.authenticated:
                         st.error("You cannot link your account to your own code.")
                     else:
                         st.session_state.linked_partner_id = partner_input_at_login
-                        st.session_state.user_mode = "Couples Mode"
                         st.session_state.authenticated = True
                         st.rerun()
                 else:
@@ -451,13 +375,13 @@ if not st.session_state.authenticated:
     with col2:
         st.markdown("""
             <div class="accent-card">
-            <h4>Pillars of Clinical Care & Discovery</h4>
+            <h4>Pillars of Clinical Care & Intimacy</h4>
             <ul>
-                <li><b>Spoken Voice Sessions:</b> Dynamic voice narration for pelvic floor unwinding.</li>
-                <li><b>Body:</b> Pelvic floor down-training & physical therapy logging.</li>
-                <li><b>Mind & Exploration:</b> Guided female self-stimulation with voice synthesis.</li>
-                <li><b>Proximity Discovery:</b> Double-blind desire matching for singles nearby.</li>
-                <li><b>Clinician Exports:</b> One-click PDF progress reports.</li>
+                <li><b>Spoken Voice Sessions:</b> Voice narration for pelvic unwinding & desire education.</li>
+                <li><b>Body (PT Tracking):</b> Track hypertonia, dilator progress, and reverse Kegels.</li>
+                <li><b>Double-Blind Partner Sync:</b> Zero-pressure desire alignment for couples.</li>
+                <li><b>Mind & Exploration:</b> Guided somatic self-stimulation modules.</li>
+                <li><b>Clinician Exports:</b> One-click PDF progress reports for your PT or therapist.</li>
             </ul>
             </div>
         """, unsafe_allow_html=True)
@@ -475,9 +399,8 @@ if not st.session_state.authenticated:
 # ==========================================
 elif nav_choice == "Dashboard & Check-In":
     st.title(f"Welcome Back, {st.session_state.user_name} 🌿")
-    st.caption(f"Today is {datetime.date.today().strftime('%A, %B %d, %Y')} | Active Mode: **{st.session_state.user_mode}**")
+    st.caption(f"Today is {datetime.date.today().strftime('%A, %B %d, %Y')}")
 
-    # Dynamic Telemetry Display
     col1, col2, col3, col4 = st.columns(4)
     col1.metric("Pelvic Discomfort", f"{st.session_state.pain_level}/10")
     col2.metric("Stress Score", f"{st.session_state.stress_level}/10")
@@ -486,7 +409,6 @@ elif nav_choice == "Dashboard & Check-In":
 
     st.markdown("---")
 
-    # DYNAMIC RECOMMENDATION HOOK WITH REAL SPOKEN VOICE
     st.subheader("🎯 Recommended Spoken Session Right Now")
     
     if st.session_state.pain_level >= 5 or st.session_state.stress_level >= 5:
@@ -510,7 +432,6 @@ elif nav_choice == "Dashboard & Check-In":
 
     st.markdown("---")
 
-    # MULTI-DAY PROGRESSION & DAILY FORM
     col_a, col_b = st.columns([1, 1])
 
     with col_a:
@@ -525,7 +446,7 @@ elif nav_choice == "Dashboard & Check-In":
                 st.audio(voice_bytes, format="audio/mp3")
 
     with col_b:
-        st.subheader("📝 60-Second Daily Check-In")
+        st.subheader("📝 Daily Check-In")
         with st.form("checkin_form"):
             st.session_state.pain_level = st.slider("Pelvic & Somatic Tension (1 = Soft, 10 = High Guarding)", 1, 10, st.session_state.pain_level)
             st.session_state.stress_level = st.slider("Mental Stress & Noise (1 = Calm, 10 = Overwhelmed)", 1, 10, st.session_state.stress_level)
@@ -548,7 +469,7 @@ elif nav_choice == "Dashboard & Check-In":
                 st.success("✅ Log saved securely!")
 
 # ==========================================
-# 7. SCREEN 2: CONTENT LIBRARY (SPOKEN VOICE)
+# 7. SCREEN 2: CONTENT LIBRARY
 # ==========================================
 elif nav_choice == "Content Library":
     st.title("📚 Content Library")
@@ -580,138 +501,97 @@ elif nav_choice == "Content Library":
         st.markdown('</div>', unsafe_allow_html=True)
 
 # ==========================================
-# 8. SCREEN 3: PROXIMITY & DISCOVERY (SINGLES)
+# 8. SCREEN 3: PARTNER ALIGNMENT & SYNC
 # ==========================================
-elif nav_choice == "📍 Proximity & Discovery":
-    st.title("📍 Proximity & Erotic Preference Matcher")
-    st.caption("Double-blind proximity matching real-time readiness capacity and mutual erotic desires.")
+elif nav_choice == "Partner Alignment & Sync":
+    st.title("🔒 Partner Alignment & Double-Blind Sync")
+    st.caption("Independently log your desires for tonight. Reveal only where your preferences overlap.")
 
-    col_settings, col_beacon = st.columns([1, 1])
+    tab1, tab2, tab3 = st.tabs(["Double-Blind Intent Sync", "Sensate Card Deck", "Partner Link Settings"])
 
-    with col_settings:
-        st.markdown("### 1. Discovery Radar Filters")
-        radius_km = st.slider("Scan Radius (Kilometers)", min_value=0.5, max_value=20.0, value=5.0, step=0.5)
-        selected_safe_zone = st.selectbox("Safe Zone / Venue Filter", SAFE_ZONES)
-        req_verified = st.checkbox("Require Verified Beacon Badge Only", value=True)
-        min_shared_tags = st.slider("Minimum Mutual Desires Required", min_value=1, max_value=5, value=1)
+    with tab1:
+        col_user, col_partner = st.columns(2)
 
-    with col_beacon:
-        st.markdown("### 2. Your Active Readiness Beacon")
-        st.session_state.partner_beacon = st.selectbox(
-            "What is your capacity right now?",
-            ["💬 Open to Talk & Coffee", "🧘 Open to Touch (Zero Pressure)", "🔥 Open to Intimacy", "🔋 Energy Low (Discovery Paused)"]
-        )
-        beacon_ttl = st.selectbox("Beacon Duration", ["2 Hours", "4 Hours", "8 Hours"])
-        
-        if st.session_state.partner_beacon != "🔋 Energy Low (Discovery Paused)":
-            st.success(f"🟢 Beacon active for {beacon_ttl} | Visible within {radius_km} km")
+        with col_user:
+            st.subheader("Your Intent for Tonight")
+            user_choice = st.radio(
+                "What feels good for tonight?",
+                [
+                    "Cuddling & Quiet Presence Only (No Touch Beyond)",
+                    "Sensate Touch (Non-Genital Massage)",
+                    "Open to Physical Intimacy if Low Discomfort",
+                    "Needs Rest / Zero Touch Tonight"
+                ],
+                key="user_intent_radio"
+            )
+            if st.button("Lock In My Intent"):
+                st.session_state.my_intent = user_choice
+                st.success("Intent locked in privately.")
+
+        with col_partner:
+            st.subheader("Partner Selection (Simulated)")
+            partner_choice = st.radio(
+                "Simulate Partner Input:",
+                [
+                    "Cuddling & Quiet Presence Only (No Touch Beyond)",
+                    "Sensate Touch (Non-Genital Massage)",
+                    "Open to Physical Intimacy if Low Discomfort",
+                    "Needs Rest / Zero Touch Tonight"
+                ],
+                key="partner_intent_radio"
+            )
+            if st.button("Lock In Partner Intent"):
+                st.session_state.partner_intent = partner_choice
+                st.success("Partner intent locked in.")
+
+        st.markdown("---")
+        st.subheader("Alignment Result")
+
+        if st.session_state.my_intent and st.session_state.partner_intent:
+            if st.session_state.my_intent == st.session_state.partner_intent:
+                st.balloons()
+                st.success(f"🎉 **Match Found!** Both of you selected:\n\n > **{st.session_state.my_intent}**")
+            else:
+                st.warning("🤝 **Different Needs Tonight:** The system revealed a low-pressure overlap option: **Cuddling & Rest Focus**.")
         else:
-            st.warning("🔴 Beacon paused. You are invisible to nearby users.")
+            st.write("Waiting for both partners to submit intent...")
 
-    st.markdown("---")
-    st.markdown("### 3. Private Erotic Preferences & Desires")
-    st.session_state.user_erotic_interests = st.multiselect(
-        "Select your active desires and boundaries (Double-blind until matched):",
-        options=EROTIC_TAXONOMY,
-        default=st.session_state.user_erotic_interests
-    )
+    with tab2:
+        st.subheader("🎴 Double-Blind Card Deck")
+        tier_choice = st.selectbox("Select Energy Tier", list(CARD_DECK.keys()))
+        prompts = CARD_DECK[tier_choice]
 
-    st.markdown("---")
-    st.markdown("### 4. Nearby Double-Blind Matches")
-
-    if st.session_state.partner_beacon == "🔋 Energy Low (Discovery Paused)":
-        st.info("Set an active readiness status above to start scanning for nearby matches.")
-    elif not st.session_state.user_erotic_interests:
-        st.info("Please select at least one erotic preference above to enable double-blind matching.")
-    else:
-        matches = []
-        for candidate in MOCK_NEARBY_SINGLES:
-            if candidate["distance_km"] <= radius_km:
-                if not req_verified or candidate["verified"]:
-                    if selected_safe_zone == "All Locations (GPS Radius)" or candidate["safe_zone"] == selected_safe_zone:
-                        if candidate["readiness"] == st.session_state.partner_beacon:
-                            shared_interests = set(st.session_state.user_erotic_interests).intersection(set(candidate["erotic_interests"]))
-                            if len(shared_interests) >= min_shared_tags:
-                                matches.append({
-                                    "id": candidate["id"],
-                                    "verified": candidate["verified"],
-                                    "distance": candidate["distance_km"],
-                                    "safe_zone": candidate["safe_zone"],
-                                    "shared_count": len(shared_interests),
-                                    "shared_tags": list(shared_interests)
-                                })
-
-        if matches:
-            st.success(f"🎉 Found {len(matches)} mutual double-blind match(es) nearby!")
-            for match in matches:
-                badge_html = "🛡️ Verified" if match["verified"] else "⚠️ Unverified"
+        with st.form("partner_deck_form"):
+            for idx, prompt in enumerate(prompts):
                 st.markdown(f"""
-                    <div class="match-banner">
-                    <h4>📍 Nearby Beacon: {match['id']} ({badge_html})</h4>
-                    <p><b>Distance:</b> ~{match['distance']} km away | <b>Location:</b> {match['safe_zone']}</p>
-                    <p><b>Mutual Desires ({match['shared_count']}):</b> {', '.join(match['shared_tags'])}</p>
+                    <div class="prompt-card">
+                    <b>Prompt #{idx+1}:</b> {prompt}
                     </div>
                 """, unsafe_allow_html=True)
-                if st.button(f"Send Encrypted Signal to {match['id']}", key=f"sig_{match['id']}"):
-                    st.success(f"Private signal sent to {match['id']}!")
+                st.checkbox(f"I'm open to this tonight", key=f"card_{tier_choice}_{idx}")
+            
+            if st.form_submit_button("Submit Secret Selections"):
+                st.success("Selections saved to isolated vault!")
+
+    with tab3:
+        st.subheader("🔗 Partner Link Manager")
+        if st.session_state.linked_partner_id:
+            st.success(f"🟢 Currently linked to partner ID: `{st.session_state.linked_partner_id}`")
+            if st.button("Unlink Partner Account"):
+                st.session_state.linked_partner_id = None
+                st.rerun()
         else:
-            st.info("No nearby beacons currently match your readiness status and desire threshold.")
+            p_code_input = st.text_input("Enter Partner Code to Link Now", placeholder="e.g. AURA-8F3K").strip().upper()
+            if st.button("Link Partner"):
+                if p_code_input == st.session_state.user_partner_code:
+                    st.error("You cannot link to your own code.")
+                elif len(p_code_input) >= 6:
+                    st.session_state.linked_partner_id = p_code_input
+                    st.success("Partner linked successfully!")
+                    st.rerun()
 
 # ==========================================
-# 9. SCREEN 4: PARTNER DOUBLE-BLIND SYNC
-# ==========================================
-elif nav_choice == "Partner Double-Blind Sync":
-    st.title("🔒 Double-Blind Partner Alignment")
-    st.caption("Independently log your desires for tonight. Match only where preferences overlap.")
-
-    col_user, col_partner = st.columns(2)
-
-    with col_user:
-        st.subheader("Your Selection")
-        user_choice = st.radio(
-            "What feels good for tonight?",
-            [
-                "Cuddling & Quiet Presence Only (No Touch Beyond)",
-                "Sensate Touch (Non-Genital Massage)",
-                "Open to Physical Intimacy if Low Discomfort",
-                "Needs Rest / Zero Touch Tonight"
-            ],
-            key="user_intent_radio"
-        )
-        if st.button("Lock In My Intent"):
-            st.session_state.my_intent = user_choice
-            st.success("Intent locked in privately.")
-
-    with col_partner:
-        st.subheader("Partner Selection (Simulated)")
-        partner_choice = st.radio(
-            "Simulate Partner Input:",
-            [
-                "Cuddling & Quiet Presence Only (No Touch Beyond)",
-                "Sensate Touch (Non-Genital Massage)",
-                "Open to Physical Intimacy if Low Discomfort",
-                "Needs Rest / Zero Touch Tonight"
-            ],
-            key="partner_intent_radio"
-        )
-        if st.button("Lock In Partner Intent"):
-            st.session_state.partner_intent = partner_choice
-            st.success("Partner intent locked in.")
-
-    st.markdown("---")
-    st.subheader("Alignment Result")
-
-    if st.session_state.my_intent and st.session_state.partner_intent:
-        if st.session_state.my_intent == st.session_state.partner_intent:
-            st.balloons()
-            st.success(f"🎉 **Match Found!** Both of you selected:\n\n > **{st.session_state.my_intent}**")
-        else:
-            st.warning("🤝 **Different Needs Tonight:** The system revealed a low-pressure overlap option: **Cuddling & Rest Focus**.")
-    else:
-        st.write("Waiting for both partners to submit intent...")
-
-# ==========================================
-# 10. SCREEN 5: EROTIC CONTEXT PROFILE
+# 9. SCREEN 4: EROTIC CONTEXT PROFILE
 # ==========================================
 elif nav_choice == "Erotic Context Profile":
     st.title("✨ Custom Erotic Context Profile")
@@ -743,7 +623,7 @@ elif nav_choice == "Erotic Context Profile":
         st.plotly_chart(fig, use_container_width=True)
 
 # ==========================================
-# 11. SCREEN 6: AI SOMATIC COACH
+# 10. SCREEN 5: AI SOMATIC COACH
 # ==========================================
 elif nav_choice == "AI Somatic Coach":
     st.title("🤖 Adaptive Somatic Voice Coach")
@@ -766,7 +646,7 @@ elif nav_choice == "AI Somatic Coach":
             st.audio(audio_data, format="audio/mp3")
 
 # ==========================================
-# 12. SCREEN 7: BODY (PELVIC & PT TRACKER)
+# 11. SCREEN 6: BODY (PELVIC & PT TRACKER)
 # ==========================================
 elif nav_choice == "Body (Pelvic & PT Tracker)":
     st.title("Body: Pelvic Floor & Physical Therapy Tracker")
@@ -823,7 +703,7 @@ elif nav_choice == "Body (Pelvic & PT Tracker)":
                 st.success("Physical therapy session logged securely!")
 
 # ==========================================
-# 13. SCREEN 8: MIND & SELF-EXPLORATION
+# 12. SCREEN 7: MIND & SELF-EXPLORATION
 # ==========================================
 elif nav_choice == "Mind & Self-Exploration":
     st.title("Mind, Self-Exploration & Climax Pathways")
@@ -864,61 +744,7 @@ elif nav_choice == "Mind & Self-Exploration":
         """, unsafe_allow_html=True)
 
 # ==========================================
-# 14. SCREEN 9: SENSATE FOCUS & PARTNER DECK
-# ==========================================
-elif nav_choice == "Sensate Focus & Partner Deck":
-    st.title("Partner Sync & Sensate Focus")
-    st.caption("Low-pressure intimacy tools, non-verbal readiness beacons, and double-blind deck matching.")
-
-    tab1, tab2, tab3 = st.tabs(["Readiness Beacon", "Double-Blind Partner Deck", "Manage Partner Link"])
-
-    with tab1:
-        st.subheader("📶 Non-Verbal Readiness Beacon")
-        new_beacon = st.radio(
-            "Current Status Signal:",
-            ["🔋 Energy Low (Need Rest)", "💬 Open to Talk & Cuddle", "🧘 Open to Touch (Zero Pressure)", "🔥 Open to Intimacy"],
-            horizontal=True
-        )
-        if st.button("Update Beacon Signal"):
-            st.session_state.partner_beacon = new_beacon
-            st.success(f"Beacon updated to: **{new_beacon}**")
-
-    with tab2:
-        st.subheader("🎴 Double-Blind Card Deck")
-        tier_choice = st.selectbox("Select Energy Tier", list(CARD_DECK.keys()))
-        prompts = CARD_DECK[tier_choice]
-
-        with st.form("partner_deck_form"):
-            for idx, prompt in enumerate(prompts):
-                st.markdown(f"""
-                    <div class="prompt-card">
-                    <b>Prompt #{idx+1}:</b> {prompt}
-                    </div>
-                """, unsafe_allow_html=True)
-                st.checkbox(f"I'm open to this tonight", key=f"card_{tier_choice}_{idx}")
-            
-            if st.form_submit_button("Submit Secret Selections"):
-                st.success("Selections saved to isolated vault!")
-
-    with tab3:
-        st.subheader("🔗 Partner Link Manager")
-        if st.session_state.linked_partner_id:
-            st.success(f"🟢 Currently linked to partner ID: `{st.session_state.linked_partner_id}`")
-            if st.button("Unlink Partner Account"):
-                st.session_state.linked_partner_id = None
-                st.rerun()
-        else:
-            p_code_input = st.text_input("Enter Partner Code to Link Now", placeholder="e.g. AURA-8F3K").strip().upper()
-            if st.button("Link Partner"):
-                if p_code_input == st.session_state.user_partner_code:
-                    st.error("You cannot link to your own code.")
-                elif len(p_code_input) >= 6:
-                    st.session_state.linked_partner_id = p_code_input
-                    st.success("Partner linked successfully!")
-                    st.rerun()
-
-# ==========================================
-# 15. SCREEN 10: CLINICIAN CORNER & PDF
+# 13. SCREEN 8: CLINICIAN CORNER & PDF
 # ==========================================
 elif nav_choice == "Clinician Corner & PDF":
     st.title("🏥 Clinician Portal & Telemetry")
@@ -951,16 +777,16 @@ elif nav_choice == "Clinician Corner & PDF":
         )
 
 # ==========================================
-# 16. SCREEN 11: PRIVACY & SECURITY
+# 14. SCREEN 9: PRIVACY & SECURITY
 # ==========================================
 elif nav_choice == "Privacy & Security":
     st.title("Privacy, Security & Data Erasure")
-    st.caption("Zero-Knowledge guarantees, double-blind isolation, and cloud retention schedules.")
+    st.caption("Zero-Knowledge guarantees and local encryption isolation.")
 
     st.table({
-        "Data Category": ["Account Auth & Profile", "Daily Pelvic Logs", "Proximity Beacon Coordinates", "Unmatched Double-Blind Votes"],
-        "Retention Period": ["Duration of Active Account", "24 Months (Rolling)", "2–8 Hours (Auto-Purged)", "Hard Deleted Instantly"],
-        "Storage Protocol": ["Encrypted Database", "Anonymized & AES-256", "Ephemeral In-Memory", "Zero Retention"]
+        "Data Category": ["Account Auth & Profile", "Daily Pelvic Logs", "Dilator History", "Unmatched Double-Blind Votes"],
+        "Retention Period": ["Duration of Active Session", "24 Months (Rolling)", "24 Months (Rolling)", "Hard Deleted Instantly"],
+        "Storage Protocol": ["Encrypted Session Memory", "Anonymized & AES-256", "Anonymized & AES-256", "Zero Retention"]
     })
 
     st.markdown("---")
