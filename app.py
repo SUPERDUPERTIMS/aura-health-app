@@ -103,11 +103,11 @@ if "partner_beacon" not in st.session_state:
 
 # EROTIC CONTEXT QUESTIONS DATABASE
 EROTIC_CONTEXT_QUESTIONS = {
-    "Cognitive Load & Tasks": "I find it hard to feel desire if I have unfinished chores, work emails, or mental stress lingering.",
-    "Emotional Closeness": "I need to feel emotionally connected, appreciated, and close with my partner before I feel open to physical intimacy.",
-    "Somatic & Muscle Comfort": "Physical relaxation, bodily warmth, and an absence of pelvic muscle guarding are essential for me to feel open to touch.",
-    "Sensory Environment": "Factors like dim lighting, pleasant scents, clean sheets, and ambient music strongly influence my mood and desire.",
-    "Novelty & Playfulness": "Playful teasing, unexpected affection, changing locations, or roleplay easily activates my desire."
+    "Cognitive Load & Tasks": "I find it hard to feel desire or reach climax if I have unfinished chores, work emails, or mental stress lingering.",
+    "Emotional Closeness": "I need to feel emotionally connected, appreciated, and close before I feel open to deep physical release.",
+    "Somatic & Muscle Comfort": "Physical relaxation, bodily warmth, and an absence of pelvic muscle guarding are essential for me to climax.",
+    "Sensory Environment": "Factors like dim lighting, pleasant scents, clean sheets, and ambient music strongly influence my ability to focus on pleasure.",
+    "Novelty & Playfulness": "Playful teasing, unexpected affection, changing locations, or roleplay easily activates my arousal."
 }
 
 # AUDIO SCRIPTS DATABASE (GENERAL)
@@ -133,19 +133,13 @@ AUDIO_SCRIPTS = {
         "One partner will take the role of the toucher, and the other will be the receiver. Explore the texture, temperature, "
         "and contour of your partner's skin—their arms, shoulders, back, or feet—using different pressures and speeds. "
         "All erogenous zones and intercourse are off-limits during this stage to allow your nervous system to fully relax."
-    ),
-    "Warm Candlelight Narrative": (
-        "The room is soft, quiet, and warm, lit only by the gentle flicker of candlelight dancing against the walls. "
-        "The air holds the faint scent of cedar and warm vanilla. As you lie back, you feel the soft fabric against your skin "
-        "and the complete absence of urgency. You feel completely safe, seen, and unhurried. Slow, deliberate touch glides "
-        "over your shoulders, tracing down your arms with gentle pressure, allowing your mind to drift away into the present moment."
     )
 }
 
-# FEMALE SELF-EXPLORATION GUIDED MODULES
+# EXPANDED FEMALE SELF-EXPLORATION & CLIMAX GUIDED MODULES
 FEMALE_EXPLORATION_MODULES = {
     "Phase 1: Zero-Pressure Somatic Mapping": {
-        "description": "A gentle journey mapping non-genital erogenous zones to awaken body awareness without expectation.",
+        "description": "A gentle journey mapping non-genital erogenous zones to awaken body awareness without expectation of performance.",
         "steps": [
             "Step 1: Set the scene—warm lighting, comfortable support under your knees, and a drop of preferred oil or lotion.",
             "Step 2: Close your eyes and spend 2 minutes using light fingertip pressure along your collarbones, neck, and inner arms.",
@@ -161,36 +155,69 @@ FEMALE_EXPLORATION_MODULES = {
             "As you exhale, let your pelvic floor drop completely soft. You are entirely safe, unhurried, and in control."
         )
     },
-    "Phase 2: Rhythmic External Stimulation": {
-        "description": "Guided technique exploring rhythmic, indirect clitoral stimulation and varied pressure patterns.",
+    "Phase 2: Anatomical Clitoral Mapping & Rhythms": {
+        "description": "Technique focusing on indirect clitoral stimulation, pressure variations, and rhythm consistency necessary for arousal building.",
         "steps": [
             "Step 1: Apply a generous amount of warm lubricant around the labia and outer vulvar tissue.",
-            "Step 2: Begin with gentle circular motions along the outer labia, avoiding direct glans contact initially.",
-            "Step 3: Transition to a slow 'clock' pattern around the clitoral hood—stopping at 12, 3, 6, and 9 o'clock.",
-            "Step 4: Layer in diaphragmatic exhales to keep the pelvic floor muscles long and unclenched as sensation builds."
+            "Step 2: Begin with gentle circular motions along the outer labia, avoiding direct glans touch to prevent oversensitivity.",
+            "Step 3: Transition to a slow 'clock' pattern around the clitoral hood—pausing at 12, 3, 6, and 9 o'clock.",
+            "Step 4: Establish a steady, rhythmic pressure. Rhythm consistency is key to helping the nervous system build arousal."
         ],
         "script": (
             "Ensure you have plenty of warm lubricant ready. Begin by applying it softly around your outer labia with slow, sweeping strokes. "
             "Resist the urge to go directly to the clitoral glans. Instead, create gentle circles around the surrounding tissue, "
             "awakening the rich network of nerve endings beneath the surface. Now, imagine a clockface over your clitoral hood. "
             "Pause with light pressure at twelve o'clock, then circle down to three, six, and nine. "
-            "If your mind begins to wander or analyze, gently bring your focus back to the physical feeling under your fingertips. "
-            "Keep your breath long and steady into your lower belly."
+            "Once you find a movement that feels good, hold that exact rhythm. Consistent speed and pressure give your nervous system "
+            "the safety and signal it needs to begin building deep, compounding pleasure."
         )
     },
-    "Phase 3: Erotica & Mind-Body Alignment": {
-        "description": "Sensory narrative blending breathwork with imaginative contextual arousal.",
+    "Phase 3: The Edge & Plateau (Somatic Teasing)": {
+        "description": "Advanced technique teaching how to navigate the arousal plateau, build sensation intensity, and lean into the climax threshold.",
         "steps": [
-            "Step 1: Lie back in a comfortable, relaxed posture with dim lighting.",
-            "Step 2: Focus on the auditory narration, picturing the sensory details vividly in your mind.",
-            "Step 3: Allow your body to respond naturally, adjusting your rhythm and touch to match your internal state."
+            "Step 1: As sensation builds toward a peak, deliberately slow your touch down or pause pressure for 5–10 seconds.",
+            "Step 2: Take two deep, slow diaphragmatic exhales, releasing any involuntary jaw or shoulder clenching.",
+            "Step 3: Resume rhythm slowly, allowing pleasure to rebuild higher than the previous level.",
+            "Step 4: Repeat 2–3 times to expand capacity for intensity before allowing full release."
+        ],
+        "script": (
+            "As you feel sensation beginning to rise into a peak, notice if you are holding your breath or tightening your shoulders. "
+            "Instead of rushing toward the edge, gently pause your touch. Keep your hand resting softly where it is. "
+            "Take a deep breath into your lower belly, and as you exhale, drop your pelvic floor completely soft. "
+            "By softening the body at high arousal, you expand your capacity for pleasure. "
+            "Now, slowly resume your rhythmic movement. Notice how the sensation feels deeper and more resonant. "
+            "You are in complete control of this wave. Let it build at its own natural pace."
+        )
+    },
+    "Phase 4: Deep Climax Release & Integration": {
+        "description": "Guided vocalization, pelvic muscle release, and continuous rhythm designed to allow full neurological climax.",
+        "steps": [
+            "Step 1: Maintain a consistent, unwavering rhythm at your preferred touch intensity.",
+            "Step 2: Open your mouth slightly and exhale with an audible sigh or tone to prevent holding tension in the throat.",
+            "Step 3: Allow the pelvic floor muscles to contract and release without trying to force or suppress the waves.",
+            "Step 4: Continue light, gentle touch post-climax to allow smooth neurological recovery and integration."
+        ],
+        "script": (
+            "You are now at the threshold of release. Do not change your speed or pressure—keep your rhythm perfectly steady. "
+            "Unclench your jaw and open your mouth slightly. Let out a soft breath or sound with every exhale. "
+            "Your throat and pelvic floor are directly connected; opening your breath allows your pelvis to fully release. "
+            "Surrender to the rhythmic pulse building inside you. Let go of all thinking, monitoring, or analyzing. "
+            "Allow your body to take over completely. Ride the wave all the way through... breathing soft and deep."
+        )
+    },
+    "Phase 5: Dual Co-Stimulation & Erotic Mind-Body Alignment": {
+        "description": "Combines internal G-spot/anterior wall awareness with external clitoral stimulation and immersive sensory narrative.",
+        "steps": [
+            "Step 1: Position a pillow under your hips for comfortable pelvic tilt.",
+            "Step 2: Combine gentle internal upward pressure along the anterior vaginal wall with steady external clitoral rhythm.",
+            "Step 3: Immerse yourself in the vivid narrative, allowing mind and body to align fully."
         ],
         "script": (
             "Imagine lying on soft linen sheets in a secluded room overlooking a warm, rain-swept garden. "
             "The air is fragrant with jasmine and woodsmoke. You feel completely relaxed, free from all responsibilities and watchful eyes. "
-            "A slow, rhythmic warmth begins deep in your pelvis, expanding outward with every deep exhale. "
-            "Your body feels weightless yet deeply connected to the surface beneath you. Allow yourself to lean into this sensation, "
-            "touching your body with deep appreciation, patience, and absolute freedom."
+            "As you apply gentle upward pressure internally, sync it with your steady external rhythm. "
+            "Feel the warm, rhythmic pulsing deep in your pelvis expanding outward with every deep exhale. "
+            "Your body feels weightless yet deeply grounded. Lean into this sensation, touching your body with deep appreciation, patience, and absolute freedom."
         )
     }
 }
@@ -296,7 +323,7 @@ if not st.session_state.authenticated:
             <h4>Pillars of Clinical Care</h4>
             <ul>
                 <li><b>Body:</b> Pelvic floor down-training & physical therapy logging.</li>
-                <li><b>Mind & Exploration:</b> Guided female self-stimulation, erotica & multi-voice audio.</li>
+                <li><b>Mind & Exploration:</b> Step-by-step female self-stimulation & climax guides.</li>
                 <li><b>Context:</b> Erotic context profile mapping (Brakes vs Accelerators).</li>
                 <li><b>Partner:</b> Double-blind desire matching & Sensate Focus guides.</li>
                 <li><b>Analytics:</b> One-click PDF/CSV reports for physical therapists.</li>
@@ -379,7 +406,7 @@ elif nav_choice == "Dashboard & Check-In":
                     st.write("Open **AI Somatic Coach** for a custom unwind sequence.")
                 else:
                     st.success("🟢 Pelvic Tone Calm")
-                    st.write("Muscle tone is low. Good foundation for rest.")
+                    st.write("Muscle tone is low. Good foundation for rest or self-exploration.")
 
             with c2:
                 if m_stress >= 6:
@@ -417,7 +444,7 @@ elif nav_choice == "Erotic Context Profile":
     scores = {}
     with st.form("erotic_profile_form"):
         st.subheader("Contextual Sensitivity Assessment")
-        st.write("Rate how significantly each dimension impacts your ability to feel open to intimacy:")
+        st.write("Rate how significantly each dimension impacts your ability to feel open to intimacy and reach climax:")
         
         for category, statement in EROTIC_CONTEXT_QUESTIONS.items():
             st.markdown(f"#### {category}")
@@ -453,7 +480,7 @@ elif nav_choice == "Erotic Context Profile":
         st.plotly_chart(fig, use_container_width=True)
 
         top_dim = profile_df.sort_values(by="Sensitivity Score", ascending=False).iloc[0]["Dimension"]
-        st.info(f"💡 **Key Insight:** Your desire is most sensitive to **'{top_dim}'**. Focus on satisfying this condition before initiating intimacy.")
+        st.info(f"💡 **Key Insight:** Your desire is most sensitive to **'{top_dim}'**. Focus on satisfying this condition before self-exploration or intimacy.")
 
 # ==========================================
 # 7. SCREEN 3: AI SOMATIC COACH
@@ -493,9 +520,9 @@ elif nav_choice == "AI Somatic Coach":
             * **Minute 3–7 (Guided Down-Training Audio):** Play *'5-Min Pelvic Unwind'* in the Body tab.
             """)
         else:
-            st.success("Tension Metrics Balanced. Initiating Restorative Maintenance.")
+            st.success("Tension Metrics Balanced. Ideal Foundation for Self-Exploration.")
             st.markdown("""
-            * **Minute 0–5 (Low-Pressure Connection):** Use the Partner Beacon to signal readiness for gentle contact.
+            * **Minute 0–5 (Self-Exploration Focus):** Try *'Phase 2: Anatomical Clitoral Mapping'* in the Mind tab.
             * **Minute 5–7 (Gratitude & Reflection):** Record a journal note in the Dashboard.
             """)
 
@@ -578,17 +605,17 @@ elif nav_choice == "Body (Pelvic & PT Tracker)":
 # 9. SCREEN 5: MIND & SELF-EXPLORATION
 # ==========================================
 elif nav_choice == "Mind & Self-Exploration":
-    st.title("Mind & Female Self-Exploration")
-    st.caption("Somatic audio grounding, responsive desire education, and guided female self-stimulation modules.")
+    st.title("Mind, Self-Exploration & Climax Pathways")
+    st.caption("Somatic audio grounding, responsive desire education, and multi-phase guided climax modules.")
 
-    tab1, tab2 = st.tabs(["🌸 Female Self-Exploration & Erotica", "🎧 General Audio Modules"])
+    tab1, tab2 = st.tabs(["🌸 Female Self-Exploration & Climax", "🎧 General Audio Modules"])
 
-    # TAB 1: FEMALE SELF-EXPLORATION & EROTICA
+    # TAB 1: FEMALE SELF-EXPLORATION & CLIMAX
     with tab1:
-        st.subheader("Guided Female Self-Exploration & Somatic Touch")
-        st.caption("Step-by-step techniques and erotic audio stories designed for low-pressure arousal and somatic mapping.")
+        st.subheader("Guided Female Self-Exploration & Orgasm Protocols")
+        st.caption("Progressive clinical techniques designed to guide you through arousal building, rhythm stacking, edging, and release.")
 
-        selected_module_key = st.selectbox("Choose Exploration Module:", list(FEMALE_EXPLORATION_MODULES.keys()))
+        selected_module_key = st.selectbox("Select Phase / Exploration Module:", list(FEMALE_EXPLORATION_MODULES.keys()))
         selected_mod = FEMALE_EXPLORATION_MODULES[selected_module_key]
         
         selected_voice_label_f = st.selectbox("Choose Narrator Voice Profile:", list(VOICE_PROFILES.keys()), key="fem_voice_select")
@@ -721,7 +748,7 @@ elif nav_choice == "Sensate Focus & Partner Deck":
 # ==========================================
 # 11. SCREEN 7: WEEKLY ANALYTICS & PT REPORT
 # ==========================================
-elif nav_choice == "Weekly Analytics & PT Report":
+elif nav_choice == "Weekly Analytics & Clinical Reporting":
     st.title("Weekly Analytics & Clinical Reporting")
     st.caption("Correlations between stress, pelvic tension, and exportable physical therapy summaries.")
 
