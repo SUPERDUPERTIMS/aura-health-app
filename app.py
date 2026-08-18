@@ -5,6 +5,7 @@ import datetime
 import time
 from gtts import gTTS
 import io
+import secrets
 
 # ==========================================
 # 1. PAGE CONFIGURATION & THEMING
@@ -64,7 +65,7 @@ st.markdown("""
         padding: 1rem;
         font-size: 0.85rem;
         color: #A1A1AA;
-        height: 180px;
+        height: 150px;
         overflow-y: scroll;
     }
     .match-banner {
@@ -100,6 +101,12 @@ if "dilator_logs" not in st.session_state:
     st.session_state.dilator_logs = []
 if "partner_beacon" not in st.session_state:
     st.session_state.partner_beacon = "🔋 Energy Low"
+
+# PARTNER LINKING SESSION INITIALIZATION
+if "user_partner_code" not in st.session_state:
+    st.session_state.user_partner_code = f"AURA-{secrets.token_hex(3).upper()}"
+if "linked_partner_id" not in st.session_state:
+    st.session_state.linked_partner_id = None
 
 # EROTIC CONTEXT QUESTIONS DATABASE
 EROTIC_CONTEXT_QUESTIONS = {
@@ -276,6 +283,11 @@ if st.session_state.authenticated:
     st.sidebar.success("AES-256 Client Vault: ACTIVE")
     st.sidebar.info("Zero-Knowledge: VERIFIED")
     
+    if st.session_state.linked_partner_id:
+        st.sidebar.success(f"🔗 Linked: `{st.session_state.linked_partner_id}`")
+    else:
+        st.sidebar.warning("🔗 Partner: Not Linked")
+
     if st.sidebar.button("Lock Portal / Log Out"):
         st.session_state.authenticated = False
         st.rerun()
@@ -283,7 +295,7 @@ else:
     nav_choice = "Auth"
 
 # ==========================================
-# 4. SCREEN 0: AUTHENTICATION & CONSENT
+# 4. SCREEN 0: AUTHENTICATION & CONSENT (WITH OPTION A: PARTNER LINK AT LOGIN)
 # ==========================================
 if not st.session_state.authenticated:
     st.title("Welcome to Aura")
@@ -296,6 +308,14 @@ if not st.session_state.authenticated:
         email = st.text_input("Email Address", value="alex@aura-health.app")
         password = st.text_input("Password", type="password", value="••••••••••••")
         
+        # --- OPTION A: PARTNER LINKING AT LOGIN ---
+        st.markdown("### 👩‍❤️‍👨 Partner Link (Optional at Login)")
+        partner_input_at_login = st.text_input(
+            "Partner Invite Code", 
+            placeholder="e.g. AURA-8F3K (Leave blank if connecting later)",
+            help="If your partner gave you a link code, enter it here to connect your accounts immediately."
+        ).strip().upper()
+
         st.markdown("### Privacy & Sensitive Data Consent")
         st.markdown("""
             <div class="legal-box">
@@ -312,8 +332,17 @@ if not st.session_state.authenticated:
 
         if st.button("Enter Secure Portal"):
             if consent:
-                st.session_state.authenticated = True
-                st.rerun()
+                # Link partner code if provided during login
+                if partner_input_at_login:
+                    if partner_input_at_login == st.session_state.user_partner_code:
+                        st.error("You cannot link your account to your own code.")
+                    else:
+                        st.session_state.linked_partner_id = partner_input_at_login
+                        st.session_state.authenticated = True
+                        st.rerun()
+                else:
+                    st.session_state.authenticated = True
+                    st.rerun()
             else:
                 st.error("Explicit consent is required to access sensitive pelvic features.")
 
@@ -325,9 +354,17 @@ if not st.session_state.authenticated:
                 <li><b>Body:</b> Pelvic floor down-training & physical therapy logging.</li>
                 <li><b>Mind & Exploration:</b> Step-by-step female self-stimulation & climax guides.</li>
                 <li><b>Context:</b> Erotic context profile mapping (Brakes vs Accelerators).</li>
-                <li><b>Partner:</b> Double-blind desire matching & Sensate Focus guides.</li>
+                <li><b>Partner Sync:</b> Double-blind desire matching & Sensate Focus guides.</li>
                 <li><b>Analytics:</b> One-click PDF/CSV reports for physical therapists.</li>
             </ul>
+            </div>
+        """, unsafe_allow_html=True)
+
+        st.markdown(f"""
+            <div class="prompt-card">
+            <b>🔑 Your Partner Invite Code:</b><br>
+            <h3 style="color: #A855F7; margin: 0.25rem 0;">{st.session_state.user_partner_code}</h3>
+            Share this code with your partner so they can enter it when signing in!
             </div>
         """, unsafe_allow_html=True)
 
@@ -345,6 +382,8 @@ elif nav_choice == "Dashboard & Check-In":
     else:
         p_val = "No log today"
         s_val = "No log today"
+
+    partner_status_text = f"Linked to {st.session_state.linked_partner_id}" if st.session_state.linked_partner_id else "Not Linked"
 
     col1, col2, col3 = st.columns(3)
     with col1:
@@ -368,7 +407,7 @@ elif nav_choice == "Dashboard & Check-In":
             <div class="metric-card">
             <h3>👩‍❤️‍👨 Partner Beacon</h3>
             <p><b>Your Status:</b> {st.session_state.partner_beacon}</p>
-            <p><b>Sensate Mode:</b> Active</p>
+            <p><b>Partner Sync:</b> {partner_status_text}</p>
             </div>
         """, unsafe_allow_html=True)
 
@@ -696,7 +735,7 @@ elif nav_choice == "Sensate Focus & Partner Deck":
     st.title("Partner Sync & Sensate Focus")
     st.caption("Low-pressure intimacy tools, non-verbal readiness beacons, and double-blind deck matching.")
 
-    tab1, tab2 = st.tabs(["Readiness Beacon", "Double-Blind Partner Deck"])
+    tab1, tab2, tab3 = st.tabs(["Readiness Beacon", "Double-Blind Partner Deck", "Manage Partner Link"])
 
     with tab1:
         st.subheader("📶 Non-Verbal Readiness Beacon")
@@ -745,10 +784,28 @@ elif nav_choice == "Sensate Focus & Partner Deck":
                 else:
                     st.info("No mutual matches detected yet tonight. Unmatched choices remain strictly confidential.")
 
+    with tab3:
+        st.subheader("🔗 Partner Link Manager")
+        if st.session_state.linked_partner_id:
+            st.success(f"🟢 Currently linked to partner ID: `{st.session_state.linked_partner_id}`")
+            if st.button("Unlink Partner Account"):
+                st.session_state.linked_partner_id = None
+                st.rerun()
+        else:
+            st.info("You are not linked to a partner account.")
+            p_code_input = st.text_input("Enter Partner Code to Link Now", placeholder="e.g. AURA-8F3K").strip().upper()
+            if st.button("Link Partner"):
+                if p_code_input == st.session_state.user_partner_code:
+                    st.error("You cannot link to your own code.")
+                elif len(p_code_input) >= 6:
+                    st.session_state.linked_partner_id = p_code_input
+                    st.success("Partner linked successfully!")
+                    st.rerun()
+
 # ==========================================
 # 11. SCREEN 7: WEEKLY ANALYTICS & PT REPORT
 # ==========================================
-elif nav_choice == "Weekly Analytics & Clinical Reporting":
+elif nav_choice == "Weekly Analytics & PT Report":
     st.title("Weekly Analytics & Clinical Reporting")
     st.caption("Correlations between stress, pelvic tension, and exportable physical therapy summaries.")
 
@@ -814,6 +871,7 @@ elif nav_choice == "Privacy & Security":
     if st.button("Trigger Immediate Account Data Erasure"):
         st.session_state.checkin_history = []
         st.session_state.dilator_logs = []
-        st.error("All local logs wiped from session memory.")
+        st.session_state.linked_partner_id = None
+        st.error("All local logs and links wiped from session memory.")
         st.session_state.authenticated = False
         st.rerun()
